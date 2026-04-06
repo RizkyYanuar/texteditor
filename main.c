@@ -3,12 +3,10 @@
 	#include <windows.h>
 	#include <string.h>
 	#include <conio.h>
+	#include "hafiez.h"
+	#include "header_bersama.h"
+	#include "najwan.h"
 	
-	
-	#define MAX_ROWS 100
-	#define MAX_COLS 256
-	#define VIEW_ROWS 20   // jumlah baris yang terlihat di layar
-	#define HEADER_LINES 3
 	
 	int main() {
 	    int menu;

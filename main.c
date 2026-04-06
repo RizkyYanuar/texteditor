@@ -3,7 +3,8 @@
 	#include <windows.h>
 	#include <string.h>
 	#include <conio.h>
-	
+	#include "headerbersama.h"
+	#include "hafiez.h"
 	
 	#define MAX_ROWS 100
 	#define MAX_COLS 256

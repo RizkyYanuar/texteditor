@@ -1,7 +1,11 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "najwan.h"
 #include "header_bersama.h"
 
 char clipboard[5000]; 
+
 
 	void deleteSelection(){
 	    int startX = selStartX, startY = selStartY;
@@ -54,6 +58,72 @@ char clipboard[5000];
 
 
 	void copySelection(){
+	    if(!isSelecting) return;
+	
+	    normalizeSelection();   // ?? WAJIB
+	
+	    memset(clipboard, 0, sizeof(clipboard)); // ?? bersihin total
+	
+	    int i;
+	    for(i = selStartY; i <= selEndY; i++){
+	
+	        // 1 BARIS
+	        if(i == selStartY && i == selEndY){
+	            strncat(clipboard, text[i] + selStartX, selEndX - selStartX);
+	        }
+	
+	        // BARIS PERTAMA
+	        else if(i == selStartY){
+	            strcat(clipboard, text[i] + selStartX);
+	            strcat(clipboard, "\n");
+	        }
+	
+	        // BARIS TERAKHIR
+	        else if(i == selEndY){
+	            strncat(clipboard, text[i], selEndX);
+	        }
+	
+	        // BARIS TENGAH
+	        else{
+	            strcat(clipboard, text[i]);
+	            strcat(clipboard, "\n");
+	        }
+	    }
+	
+	    // ?? DEBUG (optional, buat cek)
+	    // printf("\nCLIPBOARD:\n%s\n", clipboard);
+	}
+	
+	int displayFiles(char files[][100]) {
+    DIR *d;
+    struct dirent *dir;
+    int count = 0;
+
+    d = opendir(".");
+    if (!d) return 0;
+
+    while ((dir = readdir(d)) != NULL) {
+        // skip folder default
+        if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0) {
+            printf("%d. %s\n", count + 1, dir->d_name);
+            strcpy(files[count], dir->d_name);
+            count++;
+        }
+    }
+
+    closedir(d);
+    return count;
+}
+
+		
+		// delete file
+	void deleteFile(const char *filename) {
+    if (remove(filename) == 0) {
+        printf("\nFile '%s' berhasil dihapus.\n", filename);
+    } else {
+        printf("\nGagal menghapus file '%s'.\n", filename);
+    }
+
     char temp[5000];
     int i;
 
@@ -103,4 +173,5 @@ char* getClipboard(){
 
 void clearClipboard(){
     clipboard[0] = '\0';
+
 }

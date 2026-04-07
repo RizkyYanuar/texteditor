@@ -130,19 +130,4 @@ void saveFile(char *filename){
 	    isModified = 1;
 	}
 	
-	void openFileToBuffer(char *filename){
-	    FILE *fp = fopen(filename,"r");
-	    totalLines = 0;
-	    if(fp != NULL){
-	        while(fgets(text[totalLines], MAX_COLS, fp) != NULL){
-	            text[totalLines][strcspn(text[totalLines], "\n")] = 0;
-	            totalLines++;
-	            if(totalLines>=MAX_ROWS) break;
-	        }
-	        fclose(fp);
-	    }
-	    if(totalLines == 0){
-		    text[0][0] = '\0';
-		    totalLines = 1;
-		}
-	}
+

@@ -6,6 +6,7 @@
 	#include "hafiez.h"
 	#include "header_bersama.h"
 	#include "najwan.h"
+	#include "rizky.h"
 	
 	
 	int main() {
@@ -16,6 +17,7 @@
 	    char fileToOpen[100];
 	    int cursorX = 0;
 	 	int cursorY = 0;
+	 	char namaFile[100];
 	
 	
 	    while(1) { // loop menu
@@ -34,29 +36,11 @@
 	
 	            case 1:
 	                system("cls"); // bersihkan layar sebelum aksi
-	                char namaFile[100];
-	                printf("=== NEW FILE ===\n");
-	                printf("Masukkan nama file beserta ekstensi (contoh: catatan.txt): ");
-	                scanf("%s", namaFile);
-	
-	                {
-	                    FILE *fp = fopen(namaFile, "w"); // buat file
-	
-	                    if(fp == NULL){
-	                        printf("Gagal membuat file %s\n", namaFile);
-	                    } else {
-	                        printf("File %s berhasil dibuat!\n", namaFile);
-	                        fclose(fp);
-	                    }
-	                }
-	
-	                printf("\nTekan ENTER untuk kembali ke menu...");
-	                getchar(); // bersihkan newline dari scanf
-	                getchar(); // tunggu user tekan ENTER
+	                newFile(namaFile);
 	                break;
 	
 	            case 2:
-	                 system("cls");
+	                system("cls");
 	                printf("=== OPEN FILE ===\n");
 	                hFind = FindFirstFile(folderPath, &findFileData);
 	                if(hFind==INVALID_HANDLE_VALUE){

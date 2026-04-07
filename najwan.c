@@ -1,5 +1,9 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include "najwan.h"
 #include "header_bersama.h"
+
 
 	void deleteSelection(){
 	    int startX = selStartX, startY = selStartY;
@@ -87,3 +91,34 @@
 	    // ?? DEBUG (optional, buat cek)
 	    // printf("\nCLIPBOARD:\n%s\n", clipboard);
 	}
+	
+		void displayFiles() {
+    struct dirent *entry;
+    DIR *dir = opendir(".");
+
+    if (dir == NULL) {
+        printf("Tidak bisa membuka folder.\n");
+        return;
+    }
+
+    printf("\n=== DAFTAR FILE ===\n\n");
+
+    while ((entry = readdir(dir)) != NULL) {
+        if (strcmp(entry->d_name, ".") != 0 &&
+            strcmp(entry->d_name, "..") != 0) {
+            printf("%s\n", entry->d_name);
+        }
+    }
+
+    closedir(dir);
+}
+
+		
+		// delete file
+	void deleteFile(const char *filename) {
+    if (remove(filename) == 0) {
+        printf("\nFile '%s' berhasil dihapus.\n", filename);
+    } else {
+        printf("\nGagal menghapus file '%s'.\n", filename);
+    }
+}

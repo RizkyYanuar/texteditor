@@ -41,13 +41,30 @@
 	                openFile(namaFile);
 	                break;
 	
-	            case 3:
-	                system("cls");
-	                printf("=== DELETE FILE ===\n");
-	                printf("Fungsi hapus file belum dibuat\n");
-	                printf("\nTekan ENTER untuk kembali ke menu...");
-	                getchar(); getchar();
-	                break;
+			case 3:
+    system("cls");
+    printf("=== DELETE FILE ===\n");
+
+    char filename[100];
+    char confirm;
+
+    displayFiles(); 
+
+    printf("\nMasukkan nama file yang ingin dihapus: ");
+    scanf("%s", filename);
+
+    printf("Yakin ingin menghapus '%s'? (y/n): ", filename);
+    scanf(" %c", &confirm);
+
+    if(confirm == 'y' || confirm == 'Y'){
+        deleteFile(filename);
+    } else {
+        printf("Penghapusan dibatalkan.\n");
+    }
+
+    printf("\nTekan ENTER untuk kembali ke menu...");
+    getchar(); getchar();
+    break;
 	
 	            case 4:
 	                printf("Keluar dari program.\n");

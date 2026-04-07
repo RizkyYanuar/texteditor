@@ -10,5 +10,8 @@
 void deleteSelection();
 void editFile(char *filename);
 void exitFile();
+void setClipboard(const char *text);
+char* getClipboard();
+void clearClipboard();
 
 #endif

@@ -94,3 +94,19 @@ int openFile(char* namaFile) {
 	cursorX=0; cursorY=0;
 	editFile(namaFile);
 }
+
+	void cutSelection(){
+	    if(!isSelecting) return;
+	
+	    normalizeSelection();   // ?? WAJIB
+	
+	    copySelection();        // ambil dulu
+	    deleteSelection();      // hapus
+	
+	    // ?? pastikan cursor fix
+	    cursorX = selStartX;
+	    cursorY = selStartY;
+	
+	    isSelecting = 0;
+	    isModified = 1;
+	}

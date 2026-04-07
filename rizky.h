@@ -3,5 +3,7 @@
 #include <stdio.h>
 
 void newFile (char* namaFile);
+int openFile(char* namaFile);
+int listingFile(char files[][100], int *i);
 
 #endif

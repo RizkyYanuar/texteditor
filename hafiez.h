@@ -12,8 +12,7 @@ void moveCursor(int x, int y); //
 void normalizeSelection();
 int isSelected(int x, int y);
 void setColor(int color);
-void cutSelection();
 void pasteClipboard(); //
-void openFileToBuffer(char *filename);
+
 
 #endif

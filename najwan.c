@@ -4,6 +4,10 @@
 #include "najwan.h"
 #include "header_bersama.h"
 
+<<<<<<< HEAD
+=======
+char clipboard[5000]; 
+>>>>>>> e8561d6c9b76b95516890a608dd7128072087b53
 
 	void deleteSelection(){
 	    int startX = selStartX, startY = selStartY;
@@ -56,6 +60,7 @@
 
 
 	void copySelection(){
+<<<<<<< HEAD
 	    if(!isSelecting) return;
 	
 	    normalizeSelection();   // ?? WAJIB
@@ -121,4 +126,55 @@
     } else {
         printf("\nGagal menghapus file '%s'.\n", filename);
     }
+=======
+    char temp[5000];
+    int i;
+
+    temp[0] = '\0';
+
+    if(selStartX == selEndX && selStartY == selEndY){
+        return;
+    }
+
+    normalizeSelection();
+
+    for(i = selStartY; i <= selEndY; i++){
+
+        // ? 1 BARIS
+        if(i == selStartY && i == selEndY){
+            strncat(temp, text[i] + selStartX, selEndX - selStartX);
+        }
+
+        // ? BARIS PERTAMA
+        else if(i == selStartY){
+            strcat(temp, text[i] + selStartX);
+            strcat(temp, "\n");
+        }
+
+        // ? BARIS TERAKHIR
+        else if(i == selEndY){
+            strncat(temp, text[i], selEndX);
+        }
+
+        // ? BARIS TENGAH
+        else{
+            strcat(temp, text[i]);
+            strcat(temp, "\n");
+        }
+    }
+
+    setClipboard(temp); // simpan ke clipboard
+}
+
+void setClipboard(const char *text){
+    strcpy(clipboard, text);
+}
+
+char* getClipboard(){
+    return clipboard;
+}
+
+void clearClipboard(){
+    clipboard[0] = '\0';
+>>>>>>> e8561d6c9b76b95516890a608dd7128072087b53
 }

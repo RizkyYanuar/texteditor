@@ -3,11 +3,10 @@
 	#include <windows.h>
 	#include <string.h>
 	#include <conio.h>
+	#include "headerbersama.h"	
 	#include "hafiez.h"
-	#include "header_bersama.h"
 	#include "najwan.h"
 	#include "rizky.h"
-	
 	
 	int main() {
 	    int menu;

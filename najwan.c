@@ -4,10 +4,8 @@
 #include "najwan.h"
 #include "header_bersama.h"
 
-<<<<<<< HEAD
-=======
 char clipboard[5000]; 
->>>>>>> e8561d6c9b76b95516890a608dd7128072087b53
+
 
 	void deleteSelection(){
 	    int startX = selStartX, startY = selStartY;
@@ -60,7 +58,6 @@ char clipboard[5000];
 
 
 	void copySelection(){
-<<<<<<< HEAD
 	    if(!isSelecting) return;
 	
 	    normalizeSelection();   // ?? WAJIB
@@ -97,25 +94,25 @@ char clipboard[5000];
 	    // printf("\nCLIPBOARD:\n%s\n", clipboard);
 	}
 	
-		void displayFiles() {
-    struct dirent *entry;
-    DIR *dir = opendir(".");
+	int displayFiles(char files[][100]) {
+    DIR *d;
+    struct dirent *dir;
+    int count = 0;
 
-    if (dir == NULL) {
-        printf("Tidak bisa membuka folder.\n");
-        return;
-    }
+    d = opendir(".");
+    if (!d) return 0;
 
-    printf("\n=== DAFTAR FILE ===\n\n");
-
-    while ((entry = readdir(dir)) != NULL) {
-        if (strcmp(entry->d_name, ".") != 0 &&
-            strcmp(entry->d_name, "..") != 0) {
-            printf("%s\n", entry->d_name);
+    while ((dir = readdir(d)) != NULL) {
+        // skip folder default
+        if (strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0) {
+            printf("%d. %s\n", count + 1, dir->d_name);
+            strcpy(files[count], dir->d_name);
+            count++;
         }
     }
 
-    closedir(dir);
+    closedir(d);
+    return count;
 }
 
 		
@@ -126,7 +123,7 @@ char clipboard[5000];
     } else {
         printf("\nGagal menghapus file '%s'.\n", filename);
     }
-=======
+
     char temp[5000];
     int i;
 
@@ -176,5 +173,5 @@ char* getClipboard(){
 
 void clearClipboard(){
     clipboard[0] = '\0';
->>>>>>> e8561d6c9b76b95516890a608dd7128072087b53
+
 }

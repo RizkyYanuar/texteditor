@@ -3,10 +3,11 @@
 	#include <windows.h>
 	#include <string.h>
 	#include <conio.h>
-	#include "headerbersama.h"	
 	#include "hafiez.h"
+	#include "header_bersama.h"
 	#include "najwan.h"
 	#include "rizky.h"
+	
 	
 	int main() {
 	    int menu;
@@ -14,10 +15,7 @@
 	    char fileToOpen[100];
 	    int cursorX = 0;
 	 	int cursorY = 0;
-<<<<<<< Updated upstream
 	 	char namaFile[100];
-=======
->>>>>>> Stashed changes
 	
 	    while(1) { // loop menu
 	
@@ -39,104 +37,53 @@
 	                break;
 	
 	            case 2:
-<<<<<<< Updated upstream
 	                system("cls");
 	                openFile(namaFile);
 	                break;
-=======
-	                 system("cls");
-	                printf("=== OPEN FILE ===\n");
-	                hFind = FindFirstFile(folderPath, &findFileData);
-	                if(hFind==INVALID_HANDLE_VALUE){
-	                    printf("Folder kosong atau tidak ada file!\n");
-	                    getchar(); getchar();
-	                    break;
-	                }
 	
-	                int i=1;
-	                char files[100][100];
-	                do{
-	                    if(strcmp(findFileData.cFileName,".")!=0 &&
-	                       strcmp(findFileData.cFileName,"..")!=0){
-	                        strcpy(files[i-1], findFileData.cFileName);
-	                        printf("%d. %s\n", i, findFileData.cFileName);
-	                        i++;
-	                    }
-	                }while(FindNextFile(hFind,&findFileData)!=0);
-	                FindClose(hFind);
-	
-	                if(i==1){
-	                    printf("Tidak ada file.\n");
-	                    getchar(); getchar();
-	                    break;
-	                }
-	
-	                int pilihan;
-	                printf("\nPilih nomor file untuk dibuka: ");
-	                scanf("%d",&pilihan);
-	                getchar();
-	                if(pilihan<1 || pilihan>i-1){
-	                    printf("Nomor tidak valid!\n");
-	                    getchar(); getchar();
-	                    break;
-	                }
-	
-	                strcpy(namaFile, files[pilihan-1]);
-	                openFileToBuffer(namaFile);
-	                cursorX=0; cursorY=0;
-	                editFile(namaFile);
-	                break;
-	
-			case 3:
-    system("cls");
-    printf("=== DELETE FILE ===\n");
-
-    char filename[100];
-    char confirm;
-
-    displayFiles(); 
-
-    printf("\nMasukkan nama file yang ingin dihapus: ");
-    scanf("%s", filename);
-
-    printf("Yakin ingin menghapus '%s'? (y/n): ", filename);
-    scanf(" %c", &confirm);
-
-    if(confirm == 'y' || confirm == 'Y'){
-        deleteFile(filename);
-    } else {
-        printf("Penghapusan dibatalkan.\n");
-    }
-
-    printf("\nTekan ENTER untuk kembali ke menu...");
-    getchar(); getchar();
-    break;
->>>>>>> Stashed changes
-	
-			case 3:
-    system("cls");
-    printf("=== DELETE FILE ===\n");
-
-    char filename[100];
-    char confirm;
-
-    displayFiles(); 
-
-    printf("\nMasukkan nama file yang ingin dihapus: ");
-    scanf("%s", filename);
-
-    printf("Yakin ingin menghapus '%s'? (y/n): ", filename);
-    scanf(" %c", &confirm);
-
-    if(confirm == 'y' || confirm == 'Y'){
-        deleteFile(filename);
-    } else {
-        printf("Penghapusan dibatalkan.\n");
-    }
-
-    printf("\nTekan ENTER untuk kembali ke menu...");
-    getchar(); getchar();
-    break;
+				case 3:
+				    system("cls");
+				    printf("=== DELETE FILE ===\n");
+				
+				    char files[100][100];
+				    int jumlah = 0;
+				    int pilih = 0;
+				    char confirm;
+				
+				    jumlah = displayFiles(files);
+				
+				    if (jumlah == 0) {
+				        printf("Tidak ada file.\n");
+				        printf("Tekan ENTER untuk kembali...");
+				        getchar();
+				        getchar();
+				        break;
+				    }
+				
+				    printf("\nPilih nomor file yang ingin dihapus: ");
+				    scanf("%d", &pilih);
+				
+				    getchar();
+				
+				    if (pilih < 1 || pilih > jumlah) {
+				        printf("Pilihan tidak valid!\n");
+				        printf("Tekan ENTER untuk kembali...");
+				        getchar();
+				        break;
+				    }
+				
+				    printf("Yakin ingin menghapus '%s'? (y/n): ", files[pilih - 1]);
+				    scanf("%c", &confirm);
+				
+				    if (confirm == 'y' || confirm == 'Y') {
+				        deleteFile(files[pilih - 1]);
+				    } else {
+				        printf("Penghapusan dibatalkan.\n");
+				    }
+				
+				    printf("\nTekan ENTER untuk kembali ke menu...");
+				    getchar(); // tunggu enter
+				    break;
 	
 	            case 4:
 	                printf("Keluar dari program.\n");

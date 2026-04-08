@@ -3,10 +3,11 @@
 	#include <windows.h>
 	#include <string.h>
 	#include <conio.h>
-	#include "headerbersama.h"	
 	#include "hafiez.h"
+	#include "header_bersama.h"
 	#include "najwan.h"
 	#include "rizky.h"
+	
 	
 	int main() {
 	    int menu;
@@ -40,13 +41,49 @@
 	                openFile(namaFile);
 	                break;
 	
-	            case 3:
-	                system("cls");
-	                printf("=== DELETE FILE ===\n");
-	                printf("Fungsi hapus file belum dibuat\n");
-	                printf("\nTekan ENTER untuk kembali ke menu...");
-	                getchar(); getchar();
-	                break;
+				case 3:
+				    system("cls");
+				    printf("=== DELETE FILE ===\n");
+				
+				    char files[100][100];
+				    int jumlah = 0;
+				    int pilih = 0;
+				    char confirm;
+				
+				    jumlah = displayFiles(files);
+				
+				    if (jumlah == 0) {
+				        printf("Tidak ada file.\n");
+				        printf("Tekan ENTER untuk kembali...");
+				        getchar();
+				        getchar();
+				        break;
+				    }
+				
+				    printf("\nPilih nomor file yang ingin dihapus: ");
+				    scanf("%d", &pilih);
+				
+				    getchar();
+				
+				    if (pilih < 1 || pilih > jumlah) {
+				        printf("Pilihan tidak valid!\n");
+				        printf("Tekan ENTER untuk kembali...");
+				        getchar();
+				        break;
+				    }
+				
+				    printf("Yakin ingin menghapus '%s'? (y/n): ", files[pilih - 1]);
+				    scanf("%c", &confirm);
+				
+				    if (confirm == 'y' || confirm == 'Y') {
+				        deleteFile(files[pilih - 1]);
+				    } else {
+				        printf("Penghapusan dibatalkan.\n");
+				    }
+				
+				    printf("\nTekan ENTER untuk kembali ke menu...");
+				    getchar(); // tunggu enter
+				    break;
 	
 	            case 4:
 	                printf("Keluar dari program.\n");

@@ -6,10 +6,15 @@
 #include <windows.h>
 #include <string.h>
 #include <conio.h>
+#include <dirent.h>
+
+int displayFiles(char files[][100]);
+void deleteFileADT(const char *filename);
 
 void deleteSelection();
 void editFile(char *filename);
 void exitFile();
+
 void setClipboard(const char *text);
 char* getClipboard();
 void clearClipboard();

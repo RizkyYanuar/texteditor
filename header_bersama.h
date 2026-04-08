@@ -8,7 +8,7 @@
 #include <conio.h>
 	
 #define MAX_ROWS 100
-#define MAX_COLS 256
+#define MAX_COLS 100
 #define VIEW_ROWS 20   // jumlah baris yang terlihat di layar
 #define HEADER_LINES 3
 

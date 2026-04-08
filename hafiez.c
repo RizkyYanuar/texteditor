@@ -1,7 +1,6 @@
 #include "hafiez.h"
 #include "header_bersama.h"
 #include "najwan.h"
- 
 
 void saveFile(char *filename){
 		int i;
@@ -63,71 +62,31 @@ void saveFile(char *filename){
 	    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), color);
 	}
 	
-	
-	void cutSelection(){
-	    if(!isSelecting) return;
-	
-	    normalizeSelection();   // ?? WAJIB
-	
-	    copySelection();        // ambil dulu
-	    deleteSelection();      // hapus
-	
-	    // ?? pastikan cursor fix
-	    cursorX = selStartX;
-	    cursorY = selStartY;
-	
-	    isSelecting = 0;
-	    isModified = 1;
-	}
-	
+
 	void pasteClipboard(){
-	    if(strlen(clipboard) == 0) return;
+    int len, clipLen, i;
+    char *clip = getClipboard();
+
+    if(strlen(clip) == 0){
+        return;
+    }
+
+    len = strlen(text[cursorY]);
+    clipLen = strlen(clip);
+
+    if(len + clipLen < MAX_COLS){
+        for(i = len; i >= cursorX; i--){
+            text[cursorY][i + clipLen] = text[cursorY][i];
+        }
+
+        memcpy(&text[cursorY][cursorX], clip, clipLen);
+        cursorX += clipLen;
+    }
+
+    isModified = 1;
+}
 	
-	    if(isSelecting){
-	        deleteSelection();
-	    }
-	
-	    char temp[5000];
-	    strcpy(temp, clipboard);
-	
-	    char *line = strtok(temp, "\n");
-	    int first = 1;
-	
-	    while(line != NULL){
-	
-	        if(first){
-	            int len = strlen(text[cursorY]);
-	            int lineLen = strlen(line);
-	
-	            if(len + lineLen < MAX_COLS){
-	                int i;
-	                for(i = len; i >= cursorX; i--){
-	                    text[cursorY][i + lineLen] = text[cursorY][i];
-	                }
-	
-	                memcpy(&text[cursorY][cursorX], line, lineLen);
-	                cursorX += lineLen;
-	            }
-	            first = 0;
-	        }
-	        else{
-	            if(totalLines < MAX_ROWS - 1){
-	                int i;
-	                for(i = totalLines; i > cursorY + 1; i--){
-	                    strcpy(text[i], text[i-1]);
-	                }
-	
-	                cursorY++;
-	                strcpy(text[cursorY], line);
-	                cursorX = strlen(line);
-	                totalLines++;
-	            }
-	        }
-	
-	        line = strtok(NULL, "\n");
-	    }
-	
-	    isModified = 1;
-	}
+
+
 	
 

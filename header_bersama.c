@@ -37,14 +37,25 @@ void editFile(char *filename){
 	        if(key == 3){ // Ctrl + C
 			    copySelection();
 			    isSelecting = 0;
+			    drawEditor(filename);  
+			    moveCursor(5 + cursorX, cursorY + HEADER_LINES); // ?? WAJIB
+    			continue;
 			}
-			
+						
 			else if(key == 24){ // Ctrl + X
 			    cutSelection();
+			    isSelecting = 0;
+			    drawEditor(filename);  
+			    moveCursor(5 + cursorX, cursorY + HEADER_LINES); // ?? WAJIB
+    			continue;
 			}
 			
-			else if(key == 22){ // Ctrl + V
+			else if(key == 16){ // Ctrl + P
 			    pasteClipboard();
+			    isSelecting = 0;
+			    drawEditor(filename);  
+			    moveCursor(5 + cursorX, cursorY + HEADER_LINES); // ?? WAJIB
+    			continue;
 			}
 	
 	        // ESC untuk keluar edit

@@ -13,6 +13,6 @@ void normalizeSelection();
 int isSelected(int x, int y);
 void setColor(int color);
 void pasteClipboard(); //
-
+void gerakCursor(int key, int shift);
 
 #endif

@@ -86,7 +86,60 @@ void saveFile(char *filename){
     isModified = 1;
 }
 	
+void gerakCursor(int key, int shift){
 
+    // ATAS
+    if(key == 72 && cursorY > 0){
+        if(shift && !isSelecting){
+            selStartX = cursorX;
+            selStartY = cursorY;
+            isSelecting = 1;
+        }
+
+        cursorY--;
+
+        if(cursorX > strlen(text[cursorY])){
+            cursorX = strlen(text[cursorY]);
+        }
+    }
+
+    // BAWAH
+    else if(key == 80 && cursorY < totalLines - 1){
+        if(shift && !isSelecting){
+            selStartX = cursorX;
+            selStartY = cursorY;
+            isSelecting = 1;
+        }
+
+        cursorY++;
+
+        if(cursorX > strlen(text[cursorY])){
+            cursorX = strlen(text[cursorY]);
+        }
+    }
+
+    // KIRI
+    else if(key == 75 && cursorX > 0){
+        if(shift && !isSelecting){
+            selStartX = cursorX;
+            selStartY = cursorY;
+            isSelecting = 1;
+        }
+
+        cursorX--;
+    }
+
+    // KANAN
+    else if(key == 77 && cursorX < strlen(text[cursorY])){
+        if(shift && !isSelecting){
+            selStartX = cursorX;
+            selStartY = cursorY;
+            isSelecting = 1;
+        }
+
+        cursorX++;
+    }
+}
 
 	
 

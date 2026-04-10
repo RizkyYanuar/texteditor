@@ -39,7 +39,6 @@ void openFileToBuffer(char *filename){
 }
 	
 
-
 int pilihFile(int j, int *pilihan) {
 	printf("\nPilih nomor file untuk dibuka: ");
 	scanf("%d", pilihan);
@@ -85,3 +84,41 @@ int openFile(char* namaFile) {
 	    isSelecting = 0;
 	    isModified = 1;
 	}
+	
+void backspace() {
+	if(isSelecting){
+		deleteSelection();
+	}
+		
+	else{
+		int len = strlen(text[cursorY]);
+		
+		if(cursorX > 0){
+		    int i;
+		    for(i = cursorX-1; i < len; i++){
+		        text[cursorY][i] = text[cursorY][i+1];
+		    }
+		    cursorX--;
+		}	else {
+		        // join ke atas
+		        if(cursorY > 0){
+		        	int prevLen = strlen(text[cursorY - 1]);
+		
+		        	if(prevLen + len < MAX_COLS){
+		            	strcat(text[cursorY - 1], text[cursorY]);
+		
+		                int i;
+		                for(i = cursorY; i < totalLines - 1; i++){
+		                    strcpy(text[i], text[i+1]);
+		                }
+		
+		                totalLines--;
+		                cursorY--;
+		                cursorX = prevLen;
+		            }
+		        }
+		    }
+		}
+		
+		    isModified = 1;
+	        }

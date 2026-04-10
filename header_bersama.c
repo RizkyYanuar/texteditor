@@ -17,7 +17,6 @@ int selStartX = 0, selStartY = 0;
 int selEndX = 0, selEndY = 0;
 int isSelecting = 0;
 
-char clipboard[5000];
 
 int isShiftPressed(){
     return (GetKeyState(VK_SHIFT) & 0x8000);

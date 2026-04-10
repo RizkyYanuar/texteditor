@@ -38,33 +38,7 @@ void openFileToBuffer(char *filename){
 	}
 }
 	
-int listingFile(char files[][100], int *j) {
-	struct dirent *entry;
-    DIR *dir = opendir(".");
-    				
-    if (dir == NULL) {
-		printf("Folder kosong atau tidak ada file!\n");
-	    return 1;
-	}
-				    
-	int i=1;
-	while ((entry = readdir(dir)) != NULL) {
-		if (strcmp(entry->d_name, ".") != 0 &&
-		strcmp(entry->d_name, "..") != 0) {
-		strcpy(files[i-1], entry->d_name);
-		printf("%d. %s\n", i, entry->d_name);
-		i++;
-		}
-	}
-		
-	closedir(dir);
-	if(i==1){
-	    printf("Tidak ada file.\n");
-	    getch();
-	    return 1;
-	}                
-	*j = i;
-}
+
 
 int pilihFile(int j, int *pilihan) {
 	printf("\nPilih nomor file untuk dibuka: ");
@@ -79,13 +53,14 @@ int pilihFile(int j, int *pilihan) {
 }
 
 
+
 int openFile(char* namaFile) {
 	char files[100][100];
 	int j, pilihan;
 
 	printf("=== OPEN FILE ===\n");
 	                
-	listingFile(files, &j);
+	j = displayFiles(files);
 	if (pilihFile(j, &pilihan)) {
 		return 1;
 	}

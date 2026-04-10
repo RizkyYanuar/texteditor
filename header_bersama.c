@@ -167,45 +167,9 @@ void editFile(char *filename){
 			}
 	        }
 	        // Backspace
-	        else if(key == 8){
-	            if(isSelecting){
-		        deleteSelection();
-		    }
-		
-		    else{
-		        int len = strlen(text[cursorY]);
-		
-		        if(cursorX > 0){
-		            int i;
-		            for(i = cursorX-1; i < len; i++){
-		                text[cursorY][i] = text[cursorY][i+1];
-		            }
-		            cursorX--;
-		        }
-		
-		        else{
-		            // ?? join ke atas
-		            if(cursorY > 0){
-		                int prevLen = strlen(text[cursorY - 1]);
-		
-		                if(prevLen + len < MAX_COLS){
-		                    strcat(text[cursorY - 1], text[cursorY]);
-		
-		                    int i;
-		                    for(i = cursorY; i < totalLines - 1; i++){
-		                        strcpy(text[i], text[i+1]);
-		                    }
-		
-		                    totalLines--;
-		                    cursorY--;
-		                    cursorX = prevLen;
-		                }
-		            }
-		        }
-		    }
-		
-		    isModified = 1;
-	        }
+			else if (key == 8) {
+				backspace();
+			}
 	        // Enter untuk pindah baris baru
 	        else if(key == 13){
 	            if(totalLines<MAX_ROWS-1){

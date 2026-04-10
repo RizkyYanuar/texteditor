@@ -23,9 +23,8 @@ extern int selStartX, selStartY;
 extern int selEndX, selEndY;
 extern int isSelecting;
 
-extern char clipboard[5000];
+extern char clipboard[100];
 
-// function juga boleh di header
 int isShiftPressed();
 
 void editFile(char *filename);

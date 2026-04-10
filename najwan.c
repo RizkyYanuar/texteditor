@@ -4,7 +4,7 @@
 #include "najwan.h"
 #include "header_bersama.h"
 
-char clipboard[5000]; 
+char clipboard[100]; 
 
 
 	void deleteSelection(){
@@ -120,47 +120,10 @@ char clipboard[5000];
 	void deleteFile(const char *filename) {
     if (remove(filename) == 0) {
         printf("\nFile '%s' berhasil dihapus.\n", filename);
+		getchar(); // bersihkan newline dari scanf
     } else {
         printf("\nGagal menghapus file '%s'.\n", filename);
     }
-
-    char temp[5000];
-    int i;
-
-    temp[0] = '\0';
-
-    if(selStartX == selEndX && selStartY == selEndY){
-        return;
-    }
-
-    normalizeSelection();
-
-    for(i = selStartY; i <= selEndY; i++){
-
-        // ? 1 BARIS
-        if(i == selStartY && i == selEndY){
-            strncat(temp, text[i] + selStartX, selEndX - selStartX);
-        }
-
-        // ? BARIS PERTAMA
-        else if(i == selStartY){
-            strcat(temp, text[i] + selStartX);
-            strcat(temp, "\n");
-        }
-
-        // ? BARIS TERAKHIR
-        else if(i == selEndY){
-            strncat(temp, text[i], selEndX);
-        }
-
-        // ? BARIS TENGAH
-        else{
-            strcat(temp, text[i]);
-            strcat(temp, "\n");
-        }
-    }
-
-    setClipboard(temp); // simpan ke clipboard
 }
 
 void setClipboard(const char *text){

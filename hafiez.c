@@ -33,7 +33,7 @@ void saveFile(char *filename){
 	    int startX = selStartX, startY = selStartY;
 	    int endX = selEndX, endY = selEndY;
 	
-	    // ?? normalize manual (tanpa ubah global)
+	    // normalize manual (tanpa ubah global)
 	    if(startY > endY || 
 	      (startY == endY && startX > endX)){
 	        

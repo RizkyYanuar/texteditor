@@ -98,12 +98,12 @@ int openFile(char* namaFile) {
 	void cutSelection(){
 	    if(!isSelecting) return;
 	
-	    normalizeSelection();   // ?? WAJIB
+	    normalizeSelection();
 	
 	    copySelection();        // ambil dulu
 	    deleteSelection();      // hapus
 	
-	    // ?? pastikan cursor fix
+	    // cursor fix
 	    cursorX = selStartX;
 	    cursorY = selStartY;
 	

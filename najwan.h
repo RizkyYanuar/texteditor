@@ -18,5 +18,6 @@ void exitFile();
 void setClipboard(const char *text);
 char* getClipboard();
 void clearClipboard();
+void copySelection();
 
 #endif

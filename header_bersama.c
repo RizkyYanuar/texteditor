@@ -207,15 +207,25 @@ void editFile(char *filename){
 		
 		    isModified = 1;
 	        }
-	        // Enter ? pindah baris baru
+	        // Enter untuk pindah baris baru
 	        else if(key == 13){
 	            if(totalLines<MAX_ROWS-1){
 	            	int i;
-	                // pindahkan sisa baris ke bawah
-	                for(i=totalLines;i>cursorY+1;i--){
-	                    strcpy(text[i], text[i-1]);
-	                }
-	                text[cursorY+1][0]=0;
+	                // geser baris ke bawah
+			        for(i = totalLines; i > cursorY + 1; i--){
+			            strcpy(text[i], text[i-1]);
+			        }
+			
+			        // ambil sisa teks setelah cursor
+			        char temp[MAX_COLS];
+			        strcpy(temp, text[cursorY] + cursorX);
+			
+			        // potong baris lama
+			        text[cursorY][cursorX] = '\0';
+			
+			        // pindahkan ke baris baru
+			        strcpy(text[cursorY + 1], temp);
+
 	                cursorY++;
 	                cursorX=0;
 	                totalLines++;
@@ -236,9 +246,25 @@ void editFile(char *filename){
 	                text[cursorY][cursorX]=key;
 	                cursorX++;
 	            }
+	            // cek apakah panjang string di baris tersebut lebih dari samadengan maksimum kolom
+	            if(len >= MAX_COLS - 1){
+	            	
+			    // pindah ke baris baru (seperti Enter)
+			    if(totalLines < MAX_ROWS - 1){
+			        int i;
+			        for(i = totalLines; i > cursorY + 1; i--){
+			            strcpy(text[i], text[i-1]);
+			        }
+			
+			        text[cursorY + 1][0] = '\0';
+			        cursorY++;
+			        cursorX = 0;
+			        totalLines++;
+			    }
+}
 	            isModified = 1;
+	            
 	        }
-	        // update viewTop untuk scrolling
 	        if(cursorY < viewTop) viewTop = cursorY;
 	        if(cursorY >= viewTop + VIEW_ROWS) viewTop = cursorY - VIEW_ROWS + 1;
 	        

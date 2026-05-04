@@ -94,7 +94,7 @@ char clipboard[100];
 	    // printf("\nCLIPBOARD:\n%s\n", clipboard);
 	}
 	
-	int displayFiles(char files[][100]) {
+int displayFiles(char files[][100]) {
     DIR *d;
     struct dirent *dir;
     int count = 0;

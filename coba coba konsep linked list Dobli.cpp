@@ -206,7 +206,7 @@ void printBar(Bar *bar, Bar *FB) {
         addressKol Q = FB->kol;  
 
         while (Q != Nil) {
-            printf("%c", Q->info);
+            printf("%c", Q->info); //ini juga aku udah nyoba nyoba tapi masih ga jalan euy
             Q = Q->next;
         }
 

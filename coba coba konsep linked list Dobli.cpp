@@ -29,7 +29,8 @@ int main() {
     addressKol Q;
 
     int key;
-
+	printf(" TEXT EDITOR COBA COBA \n");
+	
     while (1) {
         key = getch();
 
@@ -40,6 +41,7 @@ int main() {
             if (key == 75) {
                 if (Cursor != Nil)
                     Cursor = Cursor->prev;
+                    
             }
 
             // kanan
@@ -59,9 +61,53 @@ int main() {
 
             int pos = getCursorIndex(bar, Cursor);
             setCursor(pos, 1);
-
             continue;
         }
+        
+        if (key == 8){
+    		if (Cursor == Nil){
+    			continue;
+			}
+        	
+   			addressKol temp = Cursor;
+
+
+    		if (Cursor->prev != Nil){
+        		Cursor->prev->next = Cursor->next;
+
+        		if(Cursor->next != Nil){
+           			Cursor->next->prev = Cursor->prev; 
+        		}
+        		Cursor = Cursor->prev;
+    		}
+
+    		else { 
+        		if(Cursor->next != Nil){
+            		bar->kol = Cursor->next; //ini kalo misalnya di awal tapi disebelahkanannya ada karakter == A|BC == maka jadi == |BC == dan kursor harus dibikin nil 
+            		Cursor = Cursor->next;
+            		Cursor->prev = Nil;
+            		Cursor = Nil;
+       			 }
+        		else{
+            		Cursor = Nil;
+            		bar->kol = Nil; 
+       				}
+       				
+       				
+    		}
+
+    		free(temp);
+
+		    system("cls");
+		    printf(" TEXT EDITOR COBA COBA \n");
+		    printBar(bar);
+		
+		    int pos = getCursorIndex(bar, Cursor);
+		    setCursor(pos, 1);
+
+    		continue;
+		}
+		
 
         Q = (addressKol) malloc(sizeof(Kol));
         Q->info = key;
@@ -75,7 +121,7 @@ int main() {
             Cursor = Q;
         }
         else {
-            // insert di paling kiri
+            // insert di awal
             if (Cursor == Nil) {
                 Q->next = bar->kol;
 
@@ -86,7 +132,7 @@ int main() {
                 Cursor = Q;
             }
             
-            //insert ditengah atau di ujung tergantung Cursor->next ada atau engga 
+            //insert ditengah atau di ujung tergantung Cursor->next ada atau engga riweh pokonamah
             else {
                 Q->next = Cursor->next;
                 Q->prev = Cursor;

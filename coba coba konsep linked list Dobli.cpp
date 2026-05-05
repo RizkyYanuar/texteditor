@@ -8,6 +8,7 @@
 typedef char infotype;
 
 typedef struct Kolom *addressKol;
+typedef struct Baris *addressBar;
 
 typedef struct Kolom {
     infotype info;
@@ -16,15 +17,17 @@ typedef struct Kolom {
 } Kol;
 
 typedef struct Baris {
+	addressBar prev; 
     addressKol kol;
+    addressBar next; 
 } Bar;
 
 void setCursor(int x, int y);
-void printBar(Bar *bar);
+void printBar(Bar *bar,Bar *FB);
 int getCursorIndex(Bar *bar, addressKol Cursor);
 
 int main() {
-    Bar *bar = Nil;
+    Bar *bar = Nil, *CurrentBar, *FirstBar;
     addressKol Cursor = Nil;
     addressKol Q;
 
@@ -33,7 +36,28 @@ int main() {
 	
     while (1) {
         key = getch();
+		
+		if (key ==27 ){
+			if (key == 27) {
+   				Bar *B = FirstBar;
 
+	    		while (B != Nil) {
+	        		addressKol Q = B->kol;
+	
+	        		while (Q != Nil) {
+	            		addressKol tempK = Q;
+	            		Q = Q->next;
+	            		free(tempK);
+	        		}
+	
+					Bar *tempB = B;
+	        		B = B->next;
+	        		free(tempB);
+    			}
+			} 	
+			printf("\n\nMemory Berhasil Di Bebaskan, Gacor Kang");	
+			break;
+		}
         if (key == 224 || key == 0) {
             key = getch();
 
@@ -57,7 +81,7 @@ int main() {
 
             system("cls");
             printf(" TEXT EDITOR COBA COBA \n");
-            printBar(bar);
+            printBar(bar,FirstBar);
 
             int pos = getCursorIndex(bar, Cursor);
             setCursor(pos, 1);
@@ -91,21 +115,27 @@ int main() {
         		else{
             		Cursor = Nil;
             		bar->kol = Nil; 
-       				}
-       				
-       				
+       				}	
     		}
 
     		free(temp);
 
 		    system("cls");
 		    printf(" TEXT EDITOR COBA COBA \n");
-		    printBar(bar);
+		    printBar(bar,FirstBar);
 		
 		    int pos = getCursorIndex(bar, Cursor);
 		    setCursor(pos, 1);
 
     		continue;
+		}
+		
+		
+		if (key == 13){
+			bar = (Bar*) malloc(sizeof(Bar));
+			CurrentBar->next = bar;
+			CurrentBar->next->prev = CurrentBar; // harus di kembangin lagi euy soalnya banyak yang pemisalan kaya misal kalo CurrentBar->kol = Nil nanti dia ngehapus Baris dll
+			bar->next = Nil;
 		}
 		
 
@@ -114,11 +144,13 @@ int main() {
         Q->prev = Nil;
         Q->next = Nil;
 
-        // belum ada baris kocak
+        // belum ada baris sama sekali
         if (bar == Nil) {
             bar = (Bar*) malloc(sizeof(Bar));
             bar->kol = Q;
             Cursor = Q;
+            CurrentBar = bar;
+            FirstBar = bar;
         }
         else {
             // insert di awal
@@ -147,7 +179,7 @@ int main() {
 
         system("cls");
         printf(" TEXT EDITOR COBA COBA \n");
-        printBar(bar);
+        printBar(bar,FirstBar);
 
         int pos = getCursorIndex(bar, Cursor);
         setCursor(pos, 1);
@@ -164,20 +196,24 @@ void setCursor(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
-void printBar(Bar *bar) {
-    if (bar == Nil) {
+void printBar(Bar *bar, Bar *FB) {
+    if (FB == Nil) {
         printf("\n");
         return;
     }
 
-    addressKol Q = bar->kol;
+    while (FB != Nil) {
+        addressKol Q = FB->kol;  
 
-    while (Q != Nil) {
-        printf("%c", Q->info);
-        Q = Q->next;
+        while (Q != Nil) {
+            printf("%c", Q->info); //ini juga aku udah nyoba nyoba tapi masih ga jalan euy
+            Q = Q->next;
+        }
+
+        printf("\n");
+
+        FB = FB->next;  
     }
-
-    printf("\n");
 }
 
 int getCursorIndex(Bar *bar, addressKol Cursor) {

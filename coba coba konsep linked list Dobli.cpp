@@ -197,11 +197,11 @@ int main() {
 
             addressKol temp = Cursor;
 
-            if (Cursor->prev != Nil) {
+            if (Cursor->prev != Nil) {                  //Kalo misal di tengah atau di akhir
                 Cursor->prev->next = Cursor->next;
 
                 if (Cursor->next != Nil)
-                    Cursor->next->prev = Cursor->prev;
+                    Cursor->next->prev = Cursor->prev; 	
 
                 Cursor = Cursor->prev;
             }

@@ -1,11 +1,8 @@
-#ifndef rizky_H
-#define rizky_H
-#include <stdio.h>
+#ifndef RIZKY_H
+#define RIZKY_H
+#include "hafiez.h"
 
-void newFile (char* namaFile);
-int openFile(char* namaFile);
-int pilihFile(int j, int *pilihan);
-void openFileToBuffer(char *filename);
-void cutSelection();
-void backspace();
+// ================= PRINT =================
+void printBar(addressBar FirstBar);
+
 #endif

@@ -18,6 +18,7 @@ typedef struct Kolom {
 } Kol;
 
 typedef struct Baris {
+	addressKol tail;
     addressBar prev;
     addressKol kol;
     addressBar next;
@@ -44,6 +45,9 @@ void printBar(addressBar FirstBar) {
         }
 
 //        printf("   | longBar = %d", FirstBar->longBar);
+		
+		if(FirstBar->tail != Nil)
+        printf("   | Tail = %c", FirstBar->tail->info);
         printf("\n");
         FirstBar = FirstBar->next;
         i++;
@@ -197,29 +201,32 @@ int main() {
 
             addressKol temp = Cursor;
 
-            if (Cursor->prev != Nil) {                  //Kalo misal di tengah atau di akhir
+            if (Cursor->prev != Nil) {                  //Kalo misal di tengah atau di akhir karakter
                 Cursor->prev->next = Cursor->next;
 
                 if (Cursor->next != Nil)
                     Cursor->next->prev = Cursor->prev; 	
-
+				
+				else
+					CurrentBar->tail = Cursor->prev;
+					
                 Cursor = Cursor->prev;
             }
             else {
-                if (Cursor->next != Nil) {
+                if (Cursor->next != Nil) {				//Kalo hapus di awal kolom dan di sebelah kanannya ada karakter nanti bakal di sambungin ke pointer baris
                     CurrentBar->kol = Cursor->next;
                     Cursor = Cursor->next;
                     Cursor->prev = Nil;
                     Cursor = Nil;
                 }
-                else {
+                else {									//Kalo hapus di awal kolom dan di sebelah kananya tidak ada apa apa maka pointer baris tersebut akan kosong atau tidak ada apa apa di abris tersebut
                     Cursor = Nil;
                     CurrentBar->kol = Nil;
                 }
             }
 
-            CurrentBar->longBar--;
-            if (CursorX > 0)
+            CurrentBar->longBar--;						//panjang baris akan dikurangi 
+            if (CursorX > 3)
     			CursorX = PCX(CursorX, -1);
             free(temp);
 
@@ -234,19 +241,20 @@ int main() {
         if (key == 13) { // Enter baris baru
 
             addressBar newBar = (addressBar) malloc(sizeof(Bar));
-            newBar->kol = Nil;
-            newBar->next = Nil;
-            newBar->prev = Nil;
-            newBar->longBar = 0;
+			newBar->kol = Nil;
+			newBar->tail = Nil;
+			newBar->next = Nil;
+			newBar->prev = Nil;
+			newBar->longBar = 0;
             CursorX = 3;
             
 
-            if (CurrentBar == Nil) {
+            if (CurrentBar == Nil) {			//kalo belum ada baris sama sekali
                 FirstBar = newBar;
                 CurrentBar = newBar;
             }
             
-            else if (CurrentBar->prev == Nil && Cursor == Nil) {
+            else if (CurrentBar->prev == Nil && Cursor == Nil) { //kalo enter di baris pertama untuk membuat baris baru diatasnya maka baris baru tersebut akan menjadi baris pertama
 
                 newBar->next = CurrentBar;
                 newBar->prev = Nil;
@@ -258,7 +266,7 @@ int main() {
                 CursorY = PCY(CursorY,0);
             }
             
-            else if(CurrentBar->prev != Nil && Cursor == Nil){
+            else if(CurrentBar->prev != Nil && Cursor == Nil){    //kalo enter untuk membuat baris baru diatasnya dan ada baris sebelum di enter maka nanti akan disambungkan
             	CurrentBar->prev->next = newBar;
             	newBar->prev = CurrentBar->prev;
             	newBar->next = CurrentBar;
@@ -268,11 +276,11 @@ int main() {
             	
 			}
 			
-            else {
+            else {												//kalo enter baris baru dibawah atau baris terakhir
                 newBar->next = CurrentBar->next;
                 newBar->prev = CurrentBar;
 
-                if (CurrentBar->next != Nil)
+                if (CurrentBar->next != Nil)                   //kalo ini ketika enter dan dibawhanya ada baris jadi kaya di tengah tengah ada baris baru nah nanti yang dibawah disambungin sama yang abris baru dan baris sekarang juga akal disambungin sama baris baru
                     CurrentBar->next->prev = newBar;
 
                 CurrentBar->next = newBar;
@@ -305,7 +313,9 @@ int main() {
 
             FirstBar = newBar;
             CurrentBar = newBar;
+            CurrentBar->tail = Q;
             Cursor = Q;
+            
         }
         else {
             if (Cursor == Nil) {
@@ -317,13 +327,19 @@ int main() {
                 CurrentBar->kol = Q;
                 Cursor = Q;
             }
+            
             else {
                 Q->next = Cursor->next;
                 Q->prev = Cursor;
 
-                if (Cursor->next != Nil)
-                    Cursor->next->prev = Q;
+                if (Cursor->next != Nil){
+                	Cursor->next->prev = Q;
+				}
 
+				else{
+					CurrentBar->tail = Q;
+				}
+				
                 Cursor->next = Q;
                 Cursor = Q;
             }

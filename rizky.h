@@ -5,4 +5,6 @@
 // ================= PRINT =================
 void printBar(addressBar FirstBar);
 
+void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY);
+
 #endif

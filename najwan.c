@@ -17,3 +17,21 @@ void freeAll(addressBar FirstBar) {
     }
 }
 
+
+void SaveFile(char *filename,addressBar FirstBar){
+    FILE *fp = fopen(filename,"w");
+    addressKol Kol;
+   while(FirstBar != Nil){
+   	Kol = FirstBar ->kol;
+   		while(Kol != Nil){
+   			fprintf(fp,"%c",Kol->info);
+   			Kol = Kol ->next;
+		   }
+		   fprintf(fp,"\n");
+		   FirstBar = FirstBar->next;
+   }
+
+    fclose(fp);
+
+    printf("\nFile berhasil disimpan!\n");
+}

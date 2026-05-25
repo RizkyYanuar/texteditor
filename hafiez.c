@@ -143,7 +143,6 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
     newBar->prev = Nil;
     newBar->longBar = 0;
 
-    *CursorX = 3;
 
 
     //kalo belum ada baris sama sekali
@@ -195,9 +194,10 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
     		newBar->tail = (*CurrentBar)->tail;
     		(*Cursor)->next = Nil;
     		(*CurrentBar)->tail = *Cursor;
-    		int PanjangKiri = *CursorX - 3;
-    		newBar->longBar = (*CurrentBar)->longBar;
+    		int PanjangKiri = HitungPanjangKiri((*CurrentBar)->kol,*Cursor);
+    		newBar->longBar = (*CurrentBar)->longBar - PanjangKiri;
     		(*CurrentBar)->longBar = PanjangKiri;
+			printf("\n\n\n\nPanjang Kiri : %d",PanjangKiri);
 		}
 
         newBar->next = (*CurrentBar)->next;
@@ -214,7 +214,7 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
         (*CurrentBar)->next = newBar;
 
         *CurrentBar = newBar;
-
+		*CursorX = 3;
         *CursorY = PCY(*CursorY,1);
     }
 
@@ -321,20 +321,99 @@ void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addr
 
 void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting)
 {
+	
     // awal selection
     if (*Selecting == 0){
-
         *Selecting = 1;
+        GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
+        
+       if (key == 75){
+        // kalau cursor masih punya next
+            if (*Cursor != Nil && (*Cursor)->next != Nil)
+                SelStart->kol = (*Cursor)->next;
 
-        SelStart->x = *CursorX;
-        SelStart->kol = *Cursor;
+            // kalau cursor di ujung kiri
+            else if (*Cursor != Nil)
+                SelStart->kol = *Cursor;
+
+            // kalau cursor Nil
+            else
+                SelStart->kol = (*CurrentBar)->kol;
+	    }
+	
+	    // kalau geser kanan
+	    else if (key == 77){
+            if (*Cursor != Nil)
+                SelStart->kol = *Cursor;
+            else
+                SelStart->kol = (*CurrentBar)->kol;
+	    }
+
+	    SelEnd->x = *CursorX;
+	    SelEnd->kol = *Cursor;   		
+    }
+    
+    else{
+	    GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
+	    SelEnd->x = *CursorX;
+	    // GERAK KIRI
+	    if (key == 75){
+
+            if (*Cursor != Nil && (*Cursor)->next != Nil)
+                SelEnd->kol = (*Cursor)->next;
+
+            else if (*Cursor != Nil)
+                SelEnd->kol = *Cursor;
+
+            else
+                SelEnd->kol = (*CurrentBar)->kol;
+        }
+        // GERAK KANAN
+        else if (key == 77){
+
+            if (*Cursor != Nil)
+                SelEnd->kol = *Cursor;
+
+            else
+                SelEnd->kol = (*CurrentBar)->kol;
+        }
+	}
+}
+
+int HitungPanjangKiri(addressKol CurrentBar, addressKol Cursor)
+{
+    int panjang = 0;
+
+    addressKol P = CurrentBar;
+
+    while (P != Nil && P != Cursor->next){
+        panjang++;
+        P = P->next;
     }
 
+    return panjang;
+}
 
-    // gerakkan cursor
-    GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
+void TukarSelect(SelectPoint *SelStart, SelectPoint *SelEnd)
+{
+    addressKol StartKol, EndKol;
+	int StartX, EndX;	
+    StartKol = SelStart->kol;
+    EndKol = SelEnd->kol;
 
-    // update titik akhir
-    SelEnd->x = *CursorX;
-    SelEnd->kol = *Cursor;
+    StartX = SelStart->x;
+    EndX = SelEnd->x;
+
+    // kalau select dari kanan ke kiri
+    if (StartX > EndX){
+
+        addressKol TempKol = StartKol;
+        StartKol = EndKol;
+        EndKol = TempKol;
+
+        int TempX = StartX;
+        StartX = EndX;
+        EndX = TempX;
+    }
+
 }

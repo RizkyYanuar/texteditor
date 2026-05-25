@@ -22,7 +22,6 @@ int PCY(int CurY, int perubahan){
 
 
 void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY, addressBar FirstBar){
-
     int i;
 
     // ================= KURSOR KIRI =================
@@ -189,6 +188,17 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
 
     //kalo enter baris baru dibawah atau baris terakhir
     else {
+    	
+    	if((*Cursor) != Nil && (*Cursor)->next != Nil){
+    		newBar->kol = (*Cursor)->next;
+    		newBar->kol->prev = Nil;
+    		newBar->tail = (*CurrentBar)->tail;
+    		(*Cursor)->next = Nil;
+    		(*CurrentBar)->tail = *Cursor;
+    		int PanjangKiri = *CursorX - 3;
+    		newBar->longBar = (*CurrentBar)->longBar;
+    		(*CurrentBar)->longBar = PanjangKiri;
+		}
 
         newBar->next = (*CurrentBar)->next;
 
@@ -306,4 +316,25 @@ void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addr
     printBar(*FirstBar);
 
     setCursor(*CursorX, CursorY);
+}
+
+
+void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting)
+{
+    // awal selection
+    if (*Selecting == 0){
+
+        *Selecting = 1;
+
+        SelStart->x = *CursorX;
+        SelStart->kol = *Cursor;
+    }
+
+
+    // gerakkan cursor
+    GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
+
+    // update titik akhir
+    SelEnd->x = *CursorX;
+    SelEnd->kol = *Cursor;
 }

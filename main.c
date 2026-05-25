@@ -11,7 +11,15 @@ int main() {
 	    addressKol Q;
 	    int CursorX = 3,CursorY = 1;
 	    int i;
-	
+	   SelectPoint SelStart, SelEnd;
+
+		SelStart.x = 0;
+		SelEnd.x = 0;
+		
+		SelStart.kol = Nil;
+		SelEnd.kol = Nil;
+		int Selecting;
+		
 	    int key;
 		char filename[100];
 	    printf(" TEXT EDITOR COBA COBA \n");
@@ -36,10 +44,19 @@ int main() {
 	
 	
 	        if (key == 224) {
-	            key = getch();
-	            GerakKursor(key, &CurrentBar, &Cursor, &CursorX, &CursorY, FirstBar);
-	            continue;
-        	}
+			key = getch();
+			    if (GetAsyncKeyState(VK_SHIFT) & 0x8000){
+			
+			        SelectingAtauTidak(key,&CurrentBar,&Cursor,&CursorX,&CursorY,FirstBar,&SelStart,&SelEnd,&Selecting);
+			    }
+			
+			    else {
+			        Selecting = 0;
+			        GerakKursor(key, &CurrentBar, &Cursor, &CursorX, &CursorY, FirstBar);
+			    }
+			
+			    continue;
+			}
 
 	
 	
@@ -107,9 +124,17 @@ int main() {
 	        CurrentBar->longBar++;
 			CursorX = PCX(CursorX, 1);
 			
+
 	        system("cls");
 	        printf(" TEXT EDITOR COBA COBA \n");
 	        printBar(FirstBar);
+	        if (SelStart.kol != Nil){
+    printf("\nSelect Start : %c", SelStart.kol->info);
+}
+
+if (SelEnd.kol != Nil){
+    printf("\nSelect End : %c", SelEnd.kol->info);
+}
 	        setCursor(CursorX, CursorY);
 	    }
 		

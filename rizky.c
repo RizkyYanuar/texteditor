@@ -15,7 +15,7 @@ void printBar(addressBar FirstBar) {
 //        printf("   | longBar = %d", FirstBar->longBar);
 		
 		if(temp->tail != Nil) {
-        printf("   | Tail = %c", temp->tail->info);
+        printf("   | Tail = %c   |   Panjang : %d", temp->tail->info,temp->longBar);
         }
         printf("\n");
         temp = temp->next;

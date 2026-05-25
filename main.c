@@ -13,13 +13,19 @@ int main() {
 	    int i;
 	
 	    int key;
-	
+		char filename[100];
 	    printf(" TEXT EDITOR COBA COBA \n");
 	
 	    while (1) {
 	    	
-	    	
 	        key = getch();
+			if(key == 19){
+				printf("\nMasukan nama file:");
+				scanf("%s",filename);
+				
+			 	SaveFile(filename,FirstBar);
+				continue;
+			}
 	
 	
 	        if (key == 27) {
@@ -106,7 +112,8 @@ int main() {
 	        printBar(FirstBar);
 	        setCursor(CursorX, CursorY);
 	    }
-
+		
+			
     return 0;
 	}
 

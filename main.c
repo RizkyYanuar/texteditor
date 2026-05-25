@@ -48,6 +48,7 @@ int main() {
 			    if (GetAsyncKeyState(VK_SHIFT) & 0x8000){
 			
 			        SelectingAtauTidak(key,&CurrentBar,&Cursor,&CursorX,&CursorY,FirstBar,&SelStart,&SelEnd,&Selecting);
+			        	TukarSelect(&SelStart,&SelEnd);
 			    }
 			
 			    else {
@@ -129,12 +130,11 @@ int main() {
 	        printf(" TEXT EDITOR COBA COBA \n");
 	        printBar(FirstBar);
 	        if (SelStart.kol != Nil){
-    printf("\nSelect Start : %c", SelStart.kol->info);
-}
-
-if (SelEnd.kol != Nil){
-    printf("\nSelect End : %c", SelEnd.kol->info);
-}
+			    printf("\nSelect Start : %c", SelStart.kol->info);
+			}
+			if (SelEnd.kol != Nil){
+			    printf("\nSelect End : %c", SelEnd.kol->info);
+			}
 	        setCursor(CursorX, CursorY);
 	    }
 		

@@ -39,9 +39,6 @@ void setCursor(int x, int y);
 int PCX(int CurX, int perubahan);
 int PCY(int CurY, int perubahan);
 
-void printBar(addressBar FirstBar);
-
-void freeAll(addressBar FirstBar);
 
 void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY, addressBar FirstBar);
 void BarisBaru(addressBar *CurrentBar,addressBar *FirstBar,addressKol *Cursor, int *CursorX, int *CursorY);

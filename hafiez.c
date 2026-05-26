@@ -31,7 +31,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
             *Cursor = (*Cursor)->prev; //Ketika disebah kiri ada karakter alias ada node dia Cursor akan geser terus ke awal node(BackEnd)
         }
 
-        if (*CursorX > 3)
+        if (*CursorX > 5)
             *CursorX = PCX(*CursorX, -1); //Selama dia ga berada di awal baris maka cursor akan bergerak ke kiri(FrontEnd) kalau sudah di ujung ya dia ga ngapa ngapain
     }
 
@@ -47,7 +47,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
             *Cursor = (*Cursor)->next;
         }
 
-        if (*CursorX - 3 < (*CurrentBar)->longBar) //Selama posisi Kursor tidak melebihi panjang suatu abris maka dia bisa bergeser ke kanan
+        if (*CursorX - 5 < (*CurrentBar)->longBar) //Selama posisi Kursor tidak melebihi panjang suatu abris maka dia bisa bergeser ke kanan
             *CursorX = PCX(*CursorX, +1);
     }
 
@@ -62,7 +62,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
         //ketika baris saat ini lebih pendek daro baris di atasnya maka posisi kursor di kolom tidak pindah hanya posisi abrisnya saja
         if (
             (*CurrentBar)->longBar <= (*CurrentBar)->prev->longBar ||
-            *CursorX - 3 <= (*CurrentBar)->prev->longBar
+            *CursorX - 5 <= (*CurrentBar)->prev->longBar
         ){
 
             *CurrentBar = (*CurrentBar)->prev;
@@ -76,7 +76,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
                 *Cursor = (*CurrentBar)->kol;
 
                 //maka kursor akan digeser sehauh posisi kursor terakhir
-                for (i = 1; i < *CursorX - 3; i++){
+                for (i = 1; i < *CursorX - 5; i++){
                     *Cursor = (*Cursor)->next;
                 }
             }
@@ -87,7 +87,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
         else {
             *CurrentBar = (*CurrentBar)->prev;
             *Cursor = (*CurrentBar)->tail;
-            *CursorX = (*CurrentBar)->longBar + 3;
+            *CursorX = (*CurrentBar)->longBar + 5;
         }
         *CursorY = PCY(*CursorY,-1);
     }
@@ -100,7 +100,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
             return;
             
         //ketika baris saat ini lebih pendek dari baris dibawhnay maka posisi kursor dikolom tidak akan berubah posisi barisnya saja yang berubah
-        if ((*CurrentBar)->longBar <= (*CurrentBar)->next->longBar || *CursorX - 3 <= (*CurrentBar)->next->longBar){
+        if ((*CurrentBar)->longBar <= (*CurrentBar)->next->longBar || *CursorX - 5 <= (*CurrentBar)->next->longBar){
             *CurrentBar = (*CurrentBar)->next;
             
             if(*Cursor == Nil){ // kalau cursor sekarang ada di awal baris atau = Nil maka ketika pindah ke bawah dia juga bernilai Nil Cursornya
@@ -111,7 +111,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
                 *Cursor = (*CurrentBar)->kol;
                 
                 //Cursor digeser sebanyak posisi kursor terakhir
-                for (i = 1; i < *CursorX - 3 ; i++){
+                for (i = 1; i < *CursorX - 5 ; i++){
                     *Cursor = (*Cursor)->next;
                 }
             }
@@ -122,7 +122,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
 
             *CurrentBar = (*CurrentBar)->next;
             *Cursor = (*CurrentBar)->tail;
-            *CursorX = (*CurrentBar)->longBar + 3;
+            *CursorX = (*CurrentBar)->longBar + 5;
         }
         *CursorY = PCY(*CursorY,+1);
     }
@@ -162,9 +162,9 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
         (*CurrentBar)->prev = newBar;
 
         *FirstBar = newBar;
-        *CurrentBar = newBar;
 
         *CursorY = PCY(*CursorY,0);
+        *CursorY = PCY(*CursorY,1);
     }
 
 
@@ -179,9 +179,7 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
 
         (*CurrentBar)->prev = newBar;
 
-        *CurrentBar = newBar;
-
-        *CursorY = PCY(*CursorY,0);
+        *CursorY = PCY(*CursorY,1);
     }
 
 
@@ -214,12 +212,12 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
         (*CurrentBar)->next = newBar;
 
         *CurrentBar = newBar;
-		*CursorX = 3;
+		*CursorX = 5;
         *CursorY = PCY(*CursorY,1);
     }
 
     *Cursor = Nil;
-
+	
     system("cls");
 
     printf(" TEXT EDITOR COBA COBA \n");

@@ -9,7 +9,7 @@ int main() {
 	    addressBar CurrentBar = Nil;
 	    addressKol Cursor = Nil;
 	    addressKol Q;
-	    int CursorX = 3,CursorY = 1;
+	    int CursorX = 5,CursorY = 1;
 	    int i;
 	   SelectPoint SelStart, SelEnd;
 
@@ -48,7 +48,7 @@ int main() {
 			    if (GetAsyncKeyState(VK_SHIFT) & 0x8000){
 			
 			        SelectingAtauTidak(key,&CurrentBar,&Cursor,&CursorX,&CursorY,FirstBar,&SelStart,&SelEnd,&Selecting);
-			        	TukarSelect(&SelStart,&SelEnd);
+			        	TukarSelect(&SelStart,&SelEnd); 
 			    }
 			
 			    else {

@@ -27,6 +27,11 @@ typedef struct Baris {
     int longBar;
 } Bar;
 
+typedef struct{
+    int x;
+    addressKol kol;
+} SelectPoint;
+
 // ================= FUNCTION =================
 
 void setCursor(int x, int y);
@@ -34,12 +39,11 @@ void setCursor(int x, int y);
 int PCX(int CurX, int perubahan);
 int PCY(int CurY, int perubahan);
 
-void printBar(addressBar FirstBar);
-
-void freeAll(addressBar FirstBar);
 
 void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY, addressBar FirstBar);
 void BarisBaru(addressBar *CurrentBar,addressBar *FirstBar,addressKol *Cursor, int *CursorX, int *CursorY);
 void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int CursorY);
+void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting);
+int HitungPanjangKiri(addressKol CurrentBar, addressKol Cursor);
 
 #endif

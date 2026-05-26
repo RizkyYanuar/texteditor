@@ -22,7 +22,6 @@ int PCY(int CurY, int perubahan){
 
 
 void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY, addressBar FirstBar){
-
     int i;
 
     // ================= KURSOR KIRI =================
@@ -32,7 +31,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
             *Cursor = (*Cursor)->prev; //Ketika disebah kiri ada karakter alias ada node dia Cursor akan geser terus ke awal node(BackEnd)
         }
 
-        if (*CursorX > 3)
+        if (*CursorX > 5)
             *CursorX = PCX(*CursorX, -1); //Selama dia ga berada di awal baris maka cursor akan bergerak ke kiri(FrontEnd) kalau sudah di ujung ya dia ga ngapa ngapain
     }
 
@@ -48,7 +47,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
             *Cursor = (*Cursor)->next;
         }
 
-        if (*CursorX - 3 < (*CurrentBar)->longBar) //Selama posisi Kursor tidak melebihi panjang suatu abris maka dia bisa bergeser ke kanan
+        if (*CursorX - 5 < (*CurrentBar)->longBar) //Selama posisi Kursor tidak melebihi panjang suatu abris maka dia bisa bergeser ke kanan
             *CursorX = PCX(*CursorX, +1);
     }
 
@@ -63,7 +62,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
         //ketika baris saat ini lebih pendek daro baris di atasnya maka posisi kursor di kolom tidak pindah hanya posisi abrisnya saja
         if (
             (*CurrentBar)->longBar <= (*CurrentBar)->prev->longBar ||
-            *CursorX - 3 <= (*CurrentBar)->prev->longBar
+            *CursorX - 5 <= (*CurrentBar)->prev->longBar
         ){
 
             *CurrentBar = (*CurrentBar)->prev;
@@ -77,7 +76,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
                 *Cursor = (*CurrentBar)->kol;
 
                 //maka kursor akan digeser sehauh posisi kursor terakhir
-                for (i = 1; i < *CursorX - 3; i++){
+                for (i = 1; i < *CursorX - 5; i++){
                     *Cursor = (*Cursor)->next;
                 }
             }
@@ -88,7 +87,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
         else {
             *CurrentBar = (*CurrentBar)->prev;
             *Cursor = (*CurrentBar)->tail;
-            *CursorX = (*CurrentBar)->longBar + 3;
+            *CursorX = (*CurrentBar)->longBar + 5;
         }
         *CursorY = PCY(*CursorY,-1);
     }
@@ -101,7 +100,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
             return;
             
         //ketika baris saat ini lebih pendek dari baris dibawhnay maka posisi kursor dikolom tidak akan berubah posisi barisnya saja yang berubah
-        if ((*CurrentBar)->longBar <= (*CurrentBar)->next->longBar || *CursorX - 3 <= (*CurrentBar)->next->longBar){
+        if ((*CurrentBar)->longBar <= (*CurrentBar)->next->longBar || *CursorX - 5 <= (*CurrentBar)->next->longBar){
             *CurrentBar = (*CurrentBar)->next;
             
             if(*Cursor == Nil){ // kalau cursor sekarang ada di awal baris atau = Nil maka ketika pindah ke bawah dia juga bernilai Nil Cursornya
@@ -112,7 +111,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
                 *Cursor = (*CurrentBar)->kol;
                 
                 //Cursor digeser sebanyak posisi kursor terakhir
-                for (i = 1; i < *CursorX - 3 ; i++){
+                for (i = 1; i < *CursorX - 5 ; i++){
                     *Cursor = (*Cursor)->next;
                 }
             }
@@ -123,7 +122,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
 
             *CurrentBar = (*CurrentBar)->next;
             *Cursor = (*CurrentBar)->tail;
-            *CursorX = (*CurrentBar)->longBar + 3;
+            *CursorX = (*CurrentBar)->longBar + 5;
         }
         *CursorY = PCY(*CursorY,+1);
     }
@@ -144,7 +143,6 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
     newBar->prev = Nil;
     newBar->longBar = 0;
 
-    *CursorX = 3;
 
 
     //kalo belum ada baris sama sekali
@@ -164,9 +162,9 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
         (*CurrentBar)->prev = newBar;
 
         *FirstBar = newBar;
-        *CurrentBar = newBar;
 
         *CursorY = PCY(*CursorY,0);
+        *CursorY = PCY(*CursorY,1);
     }
 
 
@@ -181,14 +179,24 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
 
         (*CurrentBar)->prev = newBar;
 
-        *CurrentBar = newBar;
-
-        *CursorY = PCY(*CursorY,0);
+        *CursorY = PCY(*CursorY,1);
     }
 
 
     //kalo enter baris baru dibawah atau baris terakhir
     else {
+    	
+    	if((*Cursor) != Nil && (*Cursor)->next != Nil){
+    		newBar->kol = (*Cursor)->next;
+    		newBar->kol->prev = Nil;
+    		newBar->tail = (*CurrentBar)->tail;
+    		(*Cursor)->next = Nil;
+    		(*CurrentBar)->tail = *Cursor;
+    		int PanjangKiri = HitungPanjangKiri((*CurrentBar)->kol,*Cursor);
+    		newBar->longBar = (*CurrentBar)->longBar - PanjangKiri;
+    		(*CurrentBar)->longBar = PanjangKiri;
+			printf("\n\n\n\nPanjang Kiri : %d",PanjangKiri);
+		}
 
         newBar->next = (*CurrentBar)->next;
 
@@ -204,12 +212,12 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
         (*CurrentBar)->next = newBar;
 
         *CurrentBar = newBar;
-
+		*CursorX = 5;
         *CursorY = PCY(*CursorY,1);
     }
 
     *Cursor = Nil;
-
+	
     system("cls");
 
     printf(" TEXT EDITOR COBA COBA \n");
@@ -306,4 +314,104 @@ void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addr
     printBar(*FirstBar);
 
     setCursor(*CursorX, CursorY);
+}
+
+
+void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting)
+{
+	
+    // awal selection
+    if (*Selecting == 0){
+        *Selecting = 1;
+        GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
+        
+       if (key == 75){
+        // kalau cursor masih punya next
+            if (*Cursor != Nil && (*Cursor)->next != Nil)
+                SelStart->kol = (*Cursor)->next;
+
+            // kalau cursor di ujung kiri
+            else if (*Cursor != Nil)
+                SelStart->kol = *Cursor;
+
+            // kalau cursor Nil
+            else
+                SelStart->kol = (*CurrentBar)->kol;
+	    }
+	
+	    // kalau geser kanan
+	    else if (key == 77){
+            if (*Cursor != Nil)
+                SelStart->kol = *Cursor;
+            else
+                SelStart->kol = (*CurrentBar)->kol;
+	    }
+
+	    SelEnd->x = *CursorX;
+	    SelEnd->kol = *Cursor;   		
+    }
+    
+    else{
+	    GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
+	    SelEnd->x = *CursorX;
+	    // GERAK KIRI
+	    if (key == 75){
+
+            if (*Cursor != Nil && (*Cursor)->next != Nil)
+                SelEnd->kol = (*Cursor)->next;
+
+            else if (*Cursor != Nil)
+                SelEnd->kol = *Cursor;
+
+            else
+                SelEnd->kol = (*CurrentBar)->kol;
+        }
+        // GERAK KANAN
+        else if (key == 77){
+
+            if (*Cursor != Nil)
+                SelEnd->kol = *Cursor;
+
+            else
+                SelEnd->kol = (*CurrentBar)->kol;
+        }
+	}
+}
+
+int HitungPanjangKiri(addressKol CurrentBar, addressKol Cursor)
+{
+    int panjang = 0;
+
+    addressKol P = CurrentBar;
+
+    while (P != Nil && P != Cursor->next){
+        panjang++;
+        P = P->next;
+    }
+
+    return panjang;
+}
+
+void TukarSelect(SelectPoint *SelStart, SelectPoint *SelEnd)
+{
+    addressKol StartKol, EndKol;
+	int StartX, EndX;	
+    StartKol = SelStart->kol;
+    EndKol = SelEnd->kol;
+
+    StartX = SelStart->x;
+    EndX = SelEnd->x;
+
+    // kalau select dari kanan ke kiri
+    if (StartX > EndX){
+
+        addressKol TempKol = StartKol;
+        StartKol = EndKol;
+        EndKol = TempKol;
+
+        int TempX = StartX;
+        StartX = EndX;
+        EndX = TempX;
+    }
+
 }

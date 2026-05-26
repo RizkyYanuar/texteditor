@@ -4,8 +4,28 @@
 	
 	
 int main() {
+	int menu;
+
+    while(1){
+
+        system("cls");
+
+        printf("1. New File\n");
+        printf("2. Open File\n");
+        printf("3. Delete File\n");
+        printf("4. Exit\n");
+        printf("Pilih : ");
+        scanf("%d",&menu);
+        
+        if(menu == 4){
+        	break;
+		}
 		
-	addressBar FirstBar = Nil;
+	if(menu == 1){
+		
+		system("cls");
+		
+		addressBar FirstBar = Nil;
 	    addressBar CurrentBar = Nil;
 	    addressKol Cursor = Nil;
 	    addressKol Q;
@@ -111,9 +131,12 @@ int main() {
 	        printf(" TEXT EDITOR COBA COBA \n");
 	        printBar(FirstBar);
 	        setCursor(CursorX, CursorY);
-	    }
-		
+	   		 }	
+	    
+		}	
+	
+	}	
 			
     return 0;
-	}
+}
 

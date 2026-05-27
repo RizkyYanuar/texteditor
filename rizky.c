@@ -25,7 +25,7 @@ void printBar(addressBar FirstBar) {
 }
 
 void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY) {
-	if(*Cursor == Nil && (*CurrentBar)->prev == Nil && (*CurrentBar)->kol == Nil) { // jika cursor saat ini nil, tidak memiliki baris sebelumnya, baris saat ini tidak memiliki node kol
+	if(*Cursor == Nil && (*CurrentBar)->prev == Nil) { // jika cursor saat ini nil, tidak memiliki baris sebelumnya, baris saat ini tidak memiliki node kol
 		// tidak akan melakukan apa apa
 	} else if (*Cursor == Nil && (*CurrentBar)->prev != Nil && (*CurrentBar)->kol != Nil) { // cek apakah kursor saat ini tidak menunjuk ke node manapun (artinya cursor berada di paling kiri baris) dan apakah baris saat ini memiliki baris sebelumnya dan apakah baris saat ini posisinya tidak kosong (yang artinya blok ini digunakan untuk meng-handle backspace di baris yang memiliki prev dan cursor berada di paling kiri dan baris saat ini memiliki node kol (terdapat huruf di baris saat ini)
 		addressBar tempBar = *CurrentBar; // isi tempBar dengan pointer ke baris saat ini (akan digunakan untuk free)
@@ -94,31 +94,50 @@ void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, 
 	setCursor(*CursorX, *CursorY);
 }
 
-addressBar Clipboard(SelectPoint SelStart, SelectPoint SelEnd) {
-	addressBar temp = (addressBar) malloc(sizeof(Bar));
-	temp->kol = Nil;
-    temp->tail = Nil;
-    temp->longBar = 0;
-	addressKol tempStart = SelStart.kol;
-	addressKol tempEnd = SelEnd.kol;
-	while (tempStart != tempEnd->next) {
-		addressKol P = (addressKol) malloc(sizeof(Kol));
-		P->info = tempStart->info;
-		P->prev = temp->tail;
+void CekClipboard(addressClipboard *CopyClipboard) {
+	if (*CopyClipboard != Nil) {
+		addressKol temp;
+		addressKol headKol = (*CopyClipboard)->kol;
+		
+		while (headKol != NULL) {
+			temp = headKol;
+			headKol = headKol->next;
+			free(temp);
+		}
+		free(*CopyClipboard);
+		*CopyClipboard = Nil;
+	}
+}
+
+addressClipboard CopyToClipboard(addressKol SelStart, addressKol SelEnd) {
+	addressClipboard Hasil = (addressClipboard) malloc(sizeof(NodeClipboard));
+	Hasil->kol = Nil;
+    Hasil->tail = Nil;
+    Hasil->longBar = 0;
+	Copy(&Hasil, SelStart, SelEnd);
+	
+	return Hasil;
+}
+
+void Copy(addressClipboard *Hasil, addressKol SelStart, addressKol SelEnd) {
+	addressKol P;
+	while (SelStart != SelEnd->next) {
+		P = (addressKol) malloc(sizeof(Kol));
+		P->info = SelStart->info;
+		P->prev = (*Hasil)->tail;
 		P->next = Nil;
 		
-		if (temp->kol == Nil) {
-            temp->kol = P;
+		if ((*Hasil)->kol == Nil) {
+            (*Hasil)->kol = P;
         } else {
-            temp->tail->next = P;
+            (*Hasil)->tail->next = P;
         }
 
-        temp->tail = P;
-        temp->longBar++;
+        (*Hasil)->tail = P;
+        (*Hasil)->longBar++;
 
-        tempStart = tempStart->next;
+        SelStart = SelStart->next;
 	}
-	
-	return temp;
 }
+
 

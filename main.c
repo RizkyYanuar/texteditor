@@ -27,7 +27,8 @@ int main() {
 		
 		addressBar FirstBar = Nil;
 	    addressBar CurrentBar = Nil;
-	    addressBar CopyClipboard = Nil;
+	    addressClipboard Clipboard = Nil;
+	    addressClipboard DuplikatClipboard = Nil;
 	    addressKol Cursor = Nil;
 	    addressKol Q;
 	    int CursorX = 5,CursorY = 1;
@@ -92,7 +93,8 @@ int main() {
 	        
 	        if (key == 3) {
 	        	TukarSelect(&SelStart,&SelEnd); 
-	        	CopyClipboard = Clipboard(SelStart, SelEnd);
+	        	CekClipboard(&Clipboard);
+	        	Clipboard = CopyToClipboard(SelStart.kol, SelEnd.kol);
 	        	SelStart.kol = Nil;
 	        	SelEnd.kol = Nil;
 	        	continue;
@@ -101,28 +103,30 @@ int main() {
 
 			if (key == 16){
 			
-				if (CopyClipboard != Nil){
+				if (Clipboard != Nil){
+					 DuplikatClipboard = CopyToClipboard(Clipboard->kol, Clipboard->tail);
+
 					if (Cursor != Nil){ // kalo cursor ga di ujung kiri
 						if(Cursor->next != Nil){ // kalo kursor di tengah tengah / diantara 2 karakter
-						Cursor->next->prev = CopyClipboard->tail; // buat nyambungin node sebelah kanan kursor sama ujung kanan dari node clipbord
-						CopyClipboard->tail->next = Cursor->next; // buat nyambungin ujung kanan clipboard sama node sebelah kanan cursor
+						Cursor->next->prev = DuplikatClipboard->tail; // buat nyambungin node sebelah kanan kursor sama ujung kanan dari node clipbord
+						DuplikatClipboard->tail->next = Cursor->next; // buat nyambungin ujung kanan clipboard sama node sebelah kanan cursor
 						}
-					Cursor->next = CopyClipboard->kol; //buat nyambungin node sebelah kiri kursor sama node ujung kiri clipboard
-					CopyClipboard->kol->prev = Cursor;	// buat nyambungin ujung kiri clipboard sama node sebelah kiri kursor
-					CurrentBar->longBar = CurrentBar->longBar + CopyClipboard->longBar;
+					Cursor->next = DuplikatClipboard->kol; //buat nyambungin node sebelah kiri kursor sama node ujung kiri clipboard
+					DuplikatClipboard->kol->prev = Cursor;	// buat nyambungin ujung kiri clipboard sama node sebelah kiri kursor
+					CurrentBar->longBar = CurrentBar->longBar + DuplikatClipboard->longBar;
 					}
 					
 					else{
 						if(CurrentBar->kol != Nil){ // kalo cursor ada di ujung kiri dan di kanan cursor ada karakter
-							CurrentBar->kol->prev = CopyClipboard->tail; //buat nyambungin node sebelah kanan kursor sama node ujung kkanan clipboard
-							CopyClipboard->tail->next = CurrentBar->kol; //buat nyambungin node ujung kanan clipbord sama node sebelah kiri kursor 
-							CurrentBar->kol = CopyClipboard->kol; //buat mastiin bahwa ujung kiri clipboard jadi kolom pertama
-							CurrentBar->longBar = CurrentBar->longBar + CopyClipboard->longBar;
+							CurrentBar->kol->prev = DuplikatClipboard->tail; //buat nyambungin node sebelah kanan kursor sama node ujung kkanan clipboard
+							DuplikatClipboard->tail->next = CurrentBar->kol; //buat nyambungin node ujung kanan clipbord sama node sebelah kiri kursor 
+							CurrentBar->kol = DuplikatClipboard->kol; //buat mastiin bahwa ujung kiri clipboard jadi kolom pertama
+							CurrentBar->longBar = CurrentBar->longBar + DuplikatClipboard->longBar;
 						}
 						else{
-							CurrentBar->kol = CopyClipboard->kol;
-							CurrentBar->longBar = CopyClipboard->longBar;
-							CurrentBar->tail = CopyClipboard->tail;
+							CurrentBar->kol = DuplikatClipboard->kol;
+							CurrentBar->longBar = DuplikatClipboard->longBar;
+							CurrentBar->tail = DuplikatClipboard->tail;
 						}
 						
 					}
@@ -132,10 +136,13 @@ int main() {
 				}
 				
 					
-				Cursor = CopyClipboard->tail;
+				Cursor = DuplikatClipboard->tail;
 				if(Cursor->next == Nil)
 					CurrentBar->tail = Cursor;
-				CursorX = PCX(CursorX,CopyClipboard->longBar);
+				CursorX = PCX(CursorX,DuplikatClipboard->longBar);
+				DuplikatClipboard->kol = Nil;
+				free(DuplikatClipboard);
+				DuplikatClipboard = Nil;
 				
 			    system("cls");
 			

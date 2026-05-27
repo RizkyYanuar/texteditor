@@ -2,13 +2,22 @@
 #define RIZKY_H
 #include "hafiez.h"
 
-// ================= PRINT =================
+typedef struct NodeClipboard *addressClipboard;
+
+typedef struct NodeClipboard {
+	addressKol tail;
+    addressKol kol;
+    int longBar;
+} NodeClipboard;
+
 void printBar(addressBar FirstBar);
 
 void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY);
 
-addressBar Clipboard(SelectPoint SelStart, SelectPoint SelEnd);
+void CekClipboard  (addressClipboard *CopyClipboard);
 
-void Paste(addressBar *CurrentBar, addressBar Clipboard, addressKol *Cursor, int *CursorX);
+addressClipboard CopyToClipboard(addressKol SelStart, addressKol SelEnd);
+
+void Copy(addressClipboard *Hasil, addressKol tempStart, addressKol tempEnd);
 
 #endif

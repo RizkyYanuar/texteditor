@@ -69,7 +69,7 @@ void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, 
 			*Cursor = Nil; // reset isi dari cursor
 		}
 		(*CurrentBar)->longBar--; // kurangi panjang dari longbar sebanyak 1
-		if (*CursorX > 3) { // memastikan agar nilai cursor x tidak kurang dari 3
+		if (*CursorX > 5) { // memastikan agar nilai cursor x tidak kurang dari 5
 			*CursorX = PCX(*CursorX, -1); // kurangi nilai cursor x sebanyak 1
 		}
 		free(tempKol); // membebaskan node kol yang tadi (yang tadi ditunjuk cursor)
@@ -92,6 +92,33 @@ void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, 
 	printf(" TEXT EDITOR COBA COBA \n");
 	printBar(FirstBar);
 	setCursor(*CursorX, *CursorY);
+}
+
+addressBar Clipboard(SelectPoint SelStart, SelectPoint SelEnd) {
+	addressBar temp = (addressBar) malloc(sizeof(Bar));
+	temp->kol = Nil;
+    temp->tail = Nil;
+    temp->longBar = 0;
+	addressKol tempStart = SelStart.kol;
+	addressKol tempEnd = SelEnd.kol;
+	while (tempStart != tempEnd->next) {
+		addressKol P = (addressKol) malloc(sizeof(Kol));
+		P->info = tempStart->info;
+		P->prev = temp->tail;
+		P->next = Nil;
+		
+		if (temp->kol == Nil) {
+            temp->kol = P;
+        } else {
+            temp->tail->next = P;
+        }
+
+        temp->tail = P;
+        temp->longBar++;
+
+        tempStart = tempStart->next;
+	}
 	
+	return temp;
 }
 

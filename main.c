@@ -31,7 +31,7 @@ int main() {
 	    addressKol Q;
 	    int CursorX = 5,CursorY = 1;
 	    int i;
-	   SelectPoint SelStart, SelEnd;
+	    SelectPoint SelStart, SelEnd;
 
 		SelStart.x = 0;
 		SelEnd.x = 0;
@@ -91,6 +91,12 @@ int main() {
 				BarisBaru(&CurrentBar, &FirstBar, &Cursor, &CursorX, &CursorY);
 	            continue;
 	        }
+	        
+	        if (key == 3) {
+	        	addressBar Clipboard = Clipboard(SelStart, SelEnd);
+			}
+			
+			
 	
 			InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);
 	    

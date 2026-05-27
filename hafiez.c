@@ -317,65 +317,94 @@ void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addr
 }
 
 
-void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting)
-{
-	
-    // awal selection
+void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting){
+
     if (*Selecting == 0){
+
         *Selecting = 1;
-        GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
-        
-       if (key == 75){
-        // kalau cursor masih punya next
-            if (*Cursor != Nil && (*Cursor)->next != Nil)
+
+        if (key == 75){
+
+            // gerakkan cursor dulu
+            GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar);
+
+            if (*Cursor != Nil){
                 SelStart->kol = (*Cursor)->next;
+            }
 
-            // kalau cursor di ujung kiri
-            else if (*Cursor != Nil)
-                SelStart->kol = *Cursor;
-
-            // kalau cursor Nil
-            else
+            else{
                 SelStart->kol = (*CurrentBar)->kol;
-	    }
-	
-	    // kalau geser kanan
-	    else if (key == 77){
-            if (*Cursor != Nil)
-                SelStart->kol = *Cursor;
-            else
-                SelStart->kol = (*CurrentBar)->kol;
-	    }
+            }
 
-	    SelEnd->x = *CursorX;
-	    SelEnd->kol = *Cursor;   		
-    }
-    
-    else{
-	    GerakKursor(key,CurrentBar,Cursor,CursorX,CursorY,FirstBar);
-	    SelEnd->x = *CursorX;
-	    // GERAK KIRI
-	    if (key == 75){
 
-            if (*Cursor != Nil && (*Cursor)->next != Nil)
-                SelEnd->kol = (*Cursor)->next;
+            SelEnd->kol = SelStart->kol;
 
-            else if (*Cursor != Nil)
-                SelEnd->kol = *Cursor;
-
-            else
-                SelEnd->kol = (*CurrentBar)->kol;
+            // posisi visual
+            SelStart->x = *CursorX + 1;
+            SelEnd->x = *CursorX + 1;
         }
-        // GERAK KANAN
+
+
         else if (key == 77){
 
-            if (*Cursor != Nil)
-                SelEnd->kol = *Cursor;
+            // gerakkan cursor dulu
+            GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar);
 
-            else
-                SelEnd->kol = (*CurrentBar)->kol;
+            if (*Cursor != Nil){
+                SelStart->kol = *Cursor;
+            }
+
+            else{
+                SelStart->kol = (*CurrentBar)->kol;
+            }
+
+            SelEnd->kol = SelStart->kol;
+
+            // posisi visual
+            SelStart->x = *CursorX;
+            SelEnd->x = *CursorX;
         }
-	}
+    }
+
+
+    else{
+
+
+
+        if (key == 75){
+
+            GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar);
+
+            // karakter selection selalu di kanan cursor
+
+            if (*Cursor != Nil){
+                SelEnd->kol = (*Cursor)->next;
+            }
+
+            else{
+                SelEnd->kol = (*CurrentBar)->kol;
+            }
+
+            SelEnd->x = *CursorX + 1;
+        }
+
+        else if (key == 77){
+
+            GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar);
+
+            // karakter selection selalu cursor
+
+            if (*Cursor != Nil){
+                SelEnd->kol = *Cursor;
+            }
+
+            else{
+                SelEnd->kol = (*CurrentBar)->kol;
+            }
+
+            SelEnd->x = *CursorX;
+        }
+    }
 }
 
 int HitungPanjangKiri(addressKol CurrentBar, addressKol Cursor)
@@ -392,26 +421,17 @@ int HitungPanjangKiri(addressKol CurrentBar, addressKol Cursor)
     return panjang;
 }
 
-void TukarSelect(SelectPoint *SelStart, SelectPoint *SelEnd)
+void TukarSelect(SelectPoint *SelStart,SelectPoint *SelEnd)
 {
-    addressKol StartKol, EndKol;
-	int StartX, EndX;	
-    StartKol = SelStart->kol;
-    EndKol = SelEnd->kol;
 
-    StartX = SelStart->x;
-    EndX = SelEnd->x;
+    if (SelStart->x > SelEnd->x){
 
-    // kalau select dari kanan ke kiri
-    if (StartX > EndX){
+        SelectPoint Temp = *SelStart;
 
-        addressKol TempKol = StartKol;
-        StartKol = EndKol;
-        EndKol = TempKol;
+        *SelStart = *SelEnd;
 
-        int TempX = StartX;
-        StartX = EndX;
-        EndX = TempX;
+        *SelEnd = Temp;
     }
-
 }
+
+

@@ -5,7 +5,7 @@
 	
 int main() {
 	int menu;
-
+	
     while(1){
 
         system("cls");
@@ -27,6 +27,7 @@ int main() {
 		
 		addressBar FirstBar = Nil;
 	    addressBar CurrentBar = Nil;
+	    addressBar CopyClipboard = Nil;
 	    addressKol Cursor = Nil;
 	    addressKol Q;
 	    int CursorX = 5,CursorY = 1;
@@ -45,7 +46,6 @@ int main() {
 	    printf(" TEXT EDITOR COBA COBA \n");
 	
 	    while (1) {
-	    	
 	        key = getch();
 			if(key == 19){
 				printf("\nMasukan nama file:");
@@ -66,9 +66,7 @@ int main() {
 	        if (key == 224) {
 			key = getch();
 			    if (GetAsyncKeyState(VK_SHIFT) & 0x8000){
-			
 			        SelectingAtauTidak(key,&CurrentBar,&Cursor,&CursorX,&CursorY,FirstBar,&SelStart,&SelEnd,&Selecting);
-			        	TukarSelect(&SelStart,&SelEnd); 
 			    }
 			
 			    else {
@@ -93,12 +91,61 @@ int main() {
 	        }
 	        
 	        if (key == 3) {
-	        	addressBar Clipboard = Clipboard(SelStart, SelEnd);
+	        	TukarSelect(&SelStart,&SelEnd); 
+	        	CopyClipboard = Clipboard(SelStart, SelEnd);
+	        	SelStart.kol = Nil;
+	        	SelEnd.kol = Nil;
+	        	continue;
 			}
 			
+
+			if (key == 16){
 			
-	
-			InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);
+				if (CopyClipboard != Nil){
+					if (Cursor != Nil){ // kalo cursor ga di ujung kiri
+						if(Cursor->next != Nil){ // kalo kursor di tengah tengah / diantara 2 karakter
+						Cursor->next->prev = CopyClipboard->tail; // buat nyambungin node sebelah kanan kursor sama ujung kanan dari node clipbord
+						CopyClipboard->tail->next = Cursor->next; // buat nyambungin ujung kanan clipboard sama node sebelah kanan cursor
+						}
+					Cursor->next = CopyClipboard->kol; //buat nyambungin node sebelah kiri kursor sama node ujung kiri clipboard
+					CopyClipboard->kol->prev = Cursor;	// buat nyambungin ujung kiri clipboard sama node sebelah kiri kursor
+						
+					}
+					
+					else{
+						if(CurrentBar->kol != Nil){ // kalo cursor ada di ujung kiri dan di kanan cursor ada karakter
+							CurrentBar->kol->prev = CopyClipboard->tail; //buat nyambungin node sebelah kanan kursor sama node ujung kkanan clipboard
+							CopyClipboard->tail->next = CurrentBar->kol; //buat nyambungin node ujung kanan clipbord sama node sebelah kiri kursor 
+							CurrentBar->kol = CopyClipboard->kol; //buat mastiin bahwa ujung kiri clipboard jadi kolom pertama
+						}
+					}
+				}
+				else{
+					continue;
+				}
+				
+					
+				CurrentBar->longBar = CurrentBar->longBar + CopyClipboard->longBar;
+				Cursor = CopyClipboard->tail;
+				if(Cursor->next == Nil)
+					CurrentBar->tail = Cursor;
+				CursorX = PCX(CursorX,CopyClipboard->longBar);
+				
+			    system("cls");
+			
+			    printf(" TEXT EDITOR COBA COBA \n");
+				
+			    printBar(FirstBar);
+			
+			    setCursor(CursorX, CursorY);
+	        	SelStart.kol = Nil;
+	        	SelEnd.kol = Nil;
+    			continue;
+				}
+
+		
+			else 
+			 	InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);
 	    
 		}	
 	

@@ -32,6 +32,13 @@ typedef struct{
     addressKol kol;
 } SelectPoint;
 
+typedef struct NodeClipboard *addressClipboard;
+
+typedef struct NodeClipboard {
+	addressKol tail;
+    addressKol kol;
+    int longBar;
+} NodeClipboard;
 // ================= FUNCTION =================
 
 void setCursor(int x, int y);
@@ -45,6 +52,6 @@ void BarisBaru(addressBar *CurrentBar,addressBar *FirstBar,addressKol *Cursor, i
 void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int CursorY);
 void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting);
 int HitungPanjangKiri(addressKol CurrentBar, addressKol Cursor);
-void PasteClipboard(addressBar *CurrentBar,addressKol *Cursor,addressBar CopyClipboard,int *CursorX);
+void PasteClipboard(addressBar FirstBar,addressBar *CurrentBar,addressKol *Cursor,addressClipboard Clipboard,int *CursorX,int CursorY);
 
 #endif

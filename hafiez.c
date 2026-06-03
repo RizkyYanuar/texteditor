@@ -229,91 +229,92 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
 
 
 void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int CursorY){
-
-    addressKol Q;
-
-    Q = (addressKol) malloc(sizeof(Kol)); //mengalokasikan sejumlah memori untuk variabel yang bertipe addressKol
-
-    Q->info = key;	//nilai awal
-    Q->prev = Nil; //nilai awal
-    Q->next = Nil;	//nilai awal
-
-
-    //belum ada baris sama sekali
-    if (*CurrentBar == Nil) {
-
-        addressBar newBar = (addressBar) malloc(sizeof(Bar));// akan mengalokasikan sejumlah memori untuk variabel yang bertipe data addressbar alias membuat baris baru
-
-        newBar->kol = Q; //bagian kol dari baris baru tersebut akan menunjuk node pertama yang diinput oleh user
-        newBar->tail = Q; //newbar bagian tail akan menunjuk node hasil inputan user
-
-        newBar->prev = Nil;// karena ini merupakan baris pertama maka bagian prev akan bernilai nil
-        newBar->next = Nil;// karena ini merupakan baris pertama maka bagian next akan bernilai nil
-
-        newBar->longBar = 0; //nilai longbar dari abris tersbut akan bernilai nil akrena user belum me
-
-        *FirstBar = newBar; //baris ini akan menjadi baris pertama
-        *CurrentBar = newBar; //pointer current bar akan menunjuk baris saat ini
-
-        *Cursor = Q; //pointer cursor akan menunjuk node saat ini hasil inputan user
-    }
-
-    else {
-
-        //insert di awal baris
-        if (*Cursor == Nil) {
-
-            Q->next = (*CurrentBar)->kol; //ketika insert di awal baris maka node hasil iputan user akan menjadi node pertama di abris tersebut
-
-            if ((*CurrentBar)->kol != Nil)// jika di baris tersebut memiliki karakter sebelumyna
-                (*CurrentBar)->kol->prev = Q; //maka karakter pertama pada baris tersebut bagian prevnay akan menunjuk hasil inputan baru dari user 
-
-            (*CurrentBar)->kol = Q; //bagian kol dari currentbar akan menunjuk node baru hasil inputan user karena node baru tersebut menjadi kolom pertama  di abris tersebut
-
-            //kalau sebelumnya baris kosong maka tail juga harus menunjuk node baru
-            if ((*CurrentBar)->tail == Nil)
-                (*CurrentBar)->tail = Q;// bagian tail dari baris tersebut akan menunjuk node baru hasil inputan user
-
-            *Cursor = Q;// cursor akan menunjuk  node baru tersebut
-        }
-
-
-        //insert di tengah atau akhir
-        else {
-
-            Q->next = (*Cursor)->next; //bagian next dari node baru akan menunjuk sesuatu yang ditunjuk oleh pointer cursor saat ini bagian next
-
-            Q->prev = *Cursor; // node bari bagian prev akan menunjuk pointer cursor saat ini
-
-            if ((*Cursor)->next != Nil){ //jika pointer cursor saat ini bagian nextnya tidak nil alias ada karakter dis ebelah kanan kursor 
-
-                (*Cursor)->next->prev = Q; // maka node/karakter disebelahkanan cursor bagian prevnya akan menunjuk node baru tersebut
-            }
-
-            //kalau insert di akhir maka tail pindah ke node baru
-            else{
-
-                (*CurrentBar)->tail = Q; // maka Q atau node baru tersebut otomatis menjadi tail dari baris tesebut karena node abru berda di ujung kanan
-            }
-
-            (*Cursor)->next = Q; //node yang sedang ditunjuk pointer cursor saat ini bagian nextnya akan menunjuk node baru
-
-            *Cursor = Q;
-        }
-    }
-
-    //panjang baris bertambah
-    (*CurrentBar)->longBar++; //panjang baris akan bertambah 1
-
-    *CursorX = PCX(*CursorX, 1); //koordinat cursor X akan bertambah 1
-
-    system("cls");
-
-    printf(" TEXT EDITOR COBA COBA \n");
-
-    printBar(*FirstBar);
-
-    setCursor(*CursorX, CursorY);
+	
+		
+	    addressKol Q;
+	
+	    Q = (addressKol) malloc(sizeof(Kol)); //mengalokasikan sejumlah memori untuk variabel yang bertipe addressKol
+	
+	    Q->info = key;	//nilai awal
+	    Q->prev = Nil; //nilai awal
+	    Q->next = Nil;	//nilai awal
+	
+	
+	    //belum ada baris sama sekali
+	    if (*CurrentBar == Nil) {
+	
+	        addressBar newBar = (addressBar) malloc(sizeof(Bar));// akan mengalokasikan sejumlah memori untuk variabel yang bertipe data addressbar alias membuat baris baru
+	
+	        newBar->kol = Q; //bagian kol dari baris baru tersebut akan menunjuk node pertama yang diinput oleh user
+	        newBar->tail = Q; //newbar bagian tail akan menunjuk node hasil inputan user
+	
+	        newBar->prev = Nil;// karena ini merupakan baris pertama maka bagian prev akan bernilai nil
+	        newBar->next = Nil;// karena ini merupakan baris pertama maka bagian next akan bernilai nil
+	
+	        newBar->longBar = 0; //nilai longbar dari abris tersbut akan bernilai nil akrena user belum me
+	
+	        *FirstBar = newBar; //baris ini akan menjadi baris pertama
+	        *CurrentBar = newBar; //pointer current bar akan menunjuk baris saat ini
+	
+	        *Cursor = Q; //pointer cursor akan menunjuk node saat ini hasil inputan user
+	    }
+	
+	    else {
+	        //insert di awal baris
+	        if (*Cursor == Nil) {
+	
+	            Q->next = (*CurrentBar)->kol; //ketika insert di awal baris maka node hasil iputan user akan menjadi node pertama di abris tersebut
+	
+	            if ((*CurrentBar)->kol != Nil)// jika di baris tersebut memiliki karakter sebelumyna
+	                (*CurrentBar)->kol->prev = Q; //maka karakter pertama pada baris tersebut bagian prevnay akan menunjuk hasil inputan baru dari user 
+	
+	            (*CurrentBar)->kol = Q; //bagian kol dari currentbar akan menunjuk node baru hasil inputan user karena node baru tersebut menjadi kolom pertama  di abris tersebut
+	
+	            //kalau sebelumnya baris kosong maka tail juga harus menunjuk node baru
+	            if ((*CurrentBar)->tail == Nil)
+	                (*CurrentBar)->tail = Q;// bagian tail dari baris tersebut akan menunjuk node baru hasil inputan user
+	
+	            *Cursor = Q;// cursor akan menunjuk  node baru tersebut
+	        }
+	
+	
+	        //insert di tengah atau akhir
+	        else {
+	
+	            Q->next = (*Cursor)->next; //bagian next dari node baru akan menunjuk sesuatu yang ditunjuk oleh pointer cursor saat ini bagian next
+	
+	            Q->prev = *Cursor; // node bari bagian prev akan menunjuk pointer cursor saat ini
+	
+	            if ((*Cursor)->next != Nil){ //jika pointer cursor saat ini bagian nextnya tidak nil alias ada karakter dis ebelah kanan kursor 
+	
+	                (*Cursor)->next->prev = Q; // maka node/karakter disebelahkanan cursor bagian prevnya akan menunjuk node baru tersebut
+	            }
+	
+	            //kalau insert di akhir maka tail pindah ke node baru
+	            else{
+	
+	                (*CurrentBar)->tail = Q; // maka Q atau node baru tersebut otomatis menjadi tail dari baris tesebut karena node abru berda di ujung kanan
+	            }
+	
+	            (*Cursor)->next = Q; //node yang sedang ditunjuk pointer cursor saat ini bagian nextnya akan menunjuk node baru
+	
+	            *Cursor = Q;
+	        }
+	    }
+	
+	    //panjang baris bertambah
+	    (*CurrentBar)->longBar++; //panjang baris akan bertambah 1
+	
+	    *CursorX = PCX(*CursorX, 1); //koordinat cursor X akan bertambah 1
+	
+	    system("cls");
+	
+	    printf(" TEXT EDITOR COBA COBA \n");
+	
+	    printBar(*FirstBar);
+	
+	    setCursor(*CursorX, CursorY);
+	
 }
 
 
@@ -430,10 +431,6 @@ void PasteClipboard(addressBar FirstBar,addressBar *CurrentBar,addressKol *Curso
 
                 DuplikatClipboard->tail->next = (*Cursor)->next; //tail atau ujung kanan dari node bagian next akan menunjuk karakter disebelah kanan kursor
             }
-            
-            else if ((*Cursor)->next == Nil){
-				(*CurrentBar)->tail = DuplikatClipboard->tail;
-			}
 
             (*Cursor)->next = DuplikatClipboard->kol; //node yang sedang ditunjuk oleh cursor bagian nextnya akan menunjuk node pertama atau node paling kiri dari clipboard
 
@@ -441,7 +438,7 @@ void PasteClipboard(addressBar FirstBar,addressBar *CurrentBar,addressKol *Curso
 
             (*CurrentBar)->longBar = (*CurrentBar)->longBar + DuplikatClipboard->longBar; //panjang baris tersbut akan ditambahn dengan panjang clipboard
             
-			if ((*Cursor)->next == Nil){
+			if (DuplikatClipboard->tail->next == Nil){
 				(*CurrentBar)->tail = DuplikatClipboard->tail;
 			}
         }

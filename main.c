@@ -79,7 +79,8 @@ int main() {
 		
 		
 		        if (key == 8) { // Backspace
-					backspace(FirstBar, &CurrentBar, &Cursor, &CursorX, &CursorY);
+		        	TukarSelect(&SelStart,&SelEnd); 
+					backspace(FirstBar, &CurrentBar, &Cursor, &CursorX, &CursorY, SelStart, SelEnd, &Selecting);
 					continue;
 		        }
 		
@@ -89,7 +90,7 @@ int main() {
 		            continue;
 		        }
 		        
-		        if (key == 3) { //backspace
+		        if (key == 3) { //
 		        	TukarSelect(&SelStart,&SelEnd); 
 		        	CekClipboard(&Clipboard);
 		        	Clipboard = CopyToClipboard(SelStart.kol, SelEnd.kol);
@@ -97,7 +98,15 @@ int main() {
 		        	SelEnd.kol = Nil;
 		        	continue;
 				}
-				
+				if (key == 24) {
+					TukarSelect(&SelStart,&SelEnd); 
+					CekClipboard(&Clipboard);
+					Clipboard = CopyToClipboard(SelStart.kol, SelEnd.kol);
+					backspace(FirstBar, &CurrentBar, &Cursor, &CursorX, &CursorY, SelStart, SelEnd, &Selecting);
+					SelStart.kol = Nil;
+		        	SelEnd.kol = Nil;
+		        	continue;
+				}
 	
 				if (key == 16){ //ctrl + p
 				
@@ -109,7 +118,7 @@ int main() {
 	
 			
 				else{	
-					 	InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);	
+					InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);	
 				} 
 					
 					
@@ -193,7 +202,8 @@ int main() {
 		
 		
 		        if (key == 8) { // Backspace
-					backspace(FirstBar, &CurrentBar, &Cursor, &CursorX, &CursorY);
+		        	TukarSelect(&SelStart,&SelEnd); 
+					backspace(FirstBar, &CurrentBar, &Cursor, &CursorX, &CursorY, SelStart, SelEnd, &Selecting);
 					continue;
 		        }
 		
@@ -208,6 +218,16 @@ int main() {
 		        	CekClipboard(&Clipboard);
 		        	Clipboard = CopyToClipboard(SelStart.kol, SelEnd.kol);
 		        	SelStart.kol = Nil;
+		        	SelEnd.kol = Nil;
+		        	continue;
+				}
+				
+				if (key == 24) {
+					TukarSelect(&SelStart,&SelEnd); 
+					CekClipboard(&Clipboard);
+					Clipboard = CopyToClipboard(SelStart.kol, SelEnd.kol);
+					backspace(FirstBar, &CurrentBar, &Cursor, &CursorX, &CursorY, SelStart, SelEnd, &Selecting);
+					SelStart.kol = Nil;
 		        	SelEnd.kol = Nil;
 		        	continue;
 				}

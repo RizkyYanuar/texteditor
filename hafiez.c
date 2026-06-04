@@ -319,14 +319,11 @@ void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addr
 
 
 void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *CursorX,int *CursorY,addressBar FirstBar,SelectPoint *SelStart,SelectPoint *SelEnd,int *Selecting){
-
     if (*Selecting == 0){
-
         *Selecting = 1;
-
         if (key == 75){
-
             // gerakkan cursor dulu
+
 //            GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar); //kusor akan bergerak ke node kiri terlebih dahulu
 
             if (*Cursor != Nil){ //jika cursor tidak nil
@@ -340,10 +337,7 @@ void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *C
 			}
 
         }
-
-
         else if (key == 77){
-
             // gerakkan cursor dulu
             GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar);
 
@@ -358,15 +352,8 @@ void SelectingAtauTidak(int key,addressBar *CurrentBar,addressKol *Cursor,int *C
             SelEnd->x = *CursorX;	//koordinat dari node akhir yang diselect akan disimpan oleh select akhir bagian x
         }
     }
-
-
     else{
-
-
-
         if (key == 75){
-
-//            GerakKursor(key, CurrentBar, Cursor,CursorX,CursorY,FirstBar);
 
             if (*Cursor != Nil){
                 SelEnd->kol = *Cursor; // pointer select akhir bagian kol akan menunjuk yang sedang ditunjuk oleh cursor
@@ -410,7 +397,12 @@ void TukarSelect(SelectPoint *SelStart,SelectPoint *SelEnd)//prosedur ini diguna
 
         *SelStart = *SelEnd; //pointer select awal akan menunjuk node yang ditunjuk pointer select akhir
 
-        *SelEnd = Temp; //pointer select akhir akan menunjuk node yang sebelumnya di tunjuk oleh pointer select awal
+        *SelEnd = Temp; //pointer select akhir akan menunjuk node yang sebelumnya di tunjuk oleh pointer select awal    
+		
+		int tempX = (*SelStart).x;
+		(*SelStart).x = (*SelEnd).x;
+		(*SelEnd).x = tempX;  		    
+        
     }
 }
 

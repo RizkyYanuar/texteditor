@@ -5,7 +5,27 @@
 	
 int main() {
 	int menu;
+	char filename[100];
+	FILE *file;
+			
+	addressBar FirstBar;
+	addressBar CurrentBar = Nil;
+	addressClipboard Clipboard = Nil;
+	addressClipboard DuplikatClipboard = Nil;
+    addressKol Cursor = Nil;
+ 	int CursorX = 5;
+	int CursorY = 1;
+	int key;
+		
+	SelectPoint SelStart, SelEnd;
+		
+	SelStart.x = 0;
+	SelEnd.x = 0;
+		
+	SelStart.kol = Nil;
+	SelEnd.kol = Nil;
 	
+	 int Selecting = 0;
     while(1){	
 
         system("cls");
@@ -22,12 +42,6 @@ int main() {
 		if(menu == 1){
 			
 			system("cls");
-			
-			addressBar FirstBar = Nil;
-		    addressBar CurrentBar = Nil;
-		    addressClipboard Clipboard = Nil;
-		    addressKol Cursor = Nil;
-		    addressKol Q;
 		    int CursorX = 5,CursorY = 1;
 		    int i;
 		    SelectPoint SelStart, SelEnd;
@@ -56,7 +70,7 @@ int main() {
 		
 		
 		        if (key == 27) {
-		            freeAll(FirstBar);
+//		            freeAll(FirstBar);
 		            printf("\n\n\n================ Memory dibebaskan ======================\n\n\n");
 		            break;
 		        }
@@ -90,7 +104,7 @@ int main() {
 		            continue;
 		        }
 		        
-		        if (key == 3) { //
+		        if (key == 3) { 
 		        	TukarSelect(&SelStart,&SelEnd); 
 		        	CekClipboard(&Clipboard);
 		        	Clipboard = CopyToClipboard(SelStart.kol, SelEnd.kol);
@@ -127,27 +141,6 @@ int main() {
 		}	
 		else if(menu == 2){
 			FILE *file;
-			char filename[100];
-			
-			addressBar FirstBar;
-		    addressBar CurrentBar = Nil;
-		    addressClipboard Clipboard = Nil;
-		    addressClipboard DuplikatClipboard = Nil;
-		    addressKol Cursor = Nil;
-		
-		    int CursorX = 5;
-		    int CursorY = 1;
-		    int key;
-		
-		    SelectPoint SelStart, SelEnd;
-		
-		    SelStart.x = 0;
-		    SelEnd.x = 0;
-		
-		    SelStart.kol = Nil;
-		    SelEnd.kol = Nil;
-	
-	    	int Selecting = 0;
 			
 			printf("Masukkan Nama File:");
 			scanf("%s",filename);
@@ -179,8 +172,7 @@ int main() {
 		
 		
 		        if (key == 27) {
-	//	            freeAll(FirstBar);
-	//	            printf("\n\n\n================ Memory dibebaskan ======================\n\n\n");
+		            printf("\n\n\n================ Memory dibebaskan ======================\n\n\n");
 		            break;
 		        }
 		
@@ -292,12 +284,14 @@ int main() {
 				else 
 				 	InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);
 			}	
-			fclose(file);	
 		}
 		
-//		else if(menu == 3){
-//			
-//		}
+		else if(menu == 3){
+			printf("\nMasukan nama file:");
+			scanf("%s",filename);
+			HapusFile(filename,&FirstBar);
+			continue;
+		}
 		
 		else if(menu == 4){
         	break;

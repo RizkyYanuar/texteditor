@@ -10,8 +10,6 @@ typedef struct tNode{
 	address next;
 }Node;
 
-void SaveFile(char *filename,addressBar FirstBar);
-void freeAll(addressBar FirstBar);
 void NewFile();
 FILE *BukaFile(char *filename);
 void OpenFileToLinkedList(
@@ -23,7 +21,8 @@ void OpenFileToLinkedList(
     int *CursorY
 );
 void SaveFile(char *filename,addressBar FirstBar);
-void freeAll(addressBar FirstBar);
+void freeAll(addressBar *FirstBar);
 void NewFile();
 void TampilIsiFile(FILE *file);
+void HapusFile(char *filename,addressBar *FirstBar);
 #endif

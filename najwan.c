@@ -1,20 +1,26 @@
 #include "najwan.h"
 
 
-void freeAll(addressBar FirstBar) {
-    while (FirstBar != Nil) {
-        addressKol Q = FirstBar->kol;
+void freeAll(addressBar *FirstBar) {
+    addressBar tempB;
+    addressKol tempK, Q;
+
+    while (*FirstBar != Nil) {
+
+        Q = (*FirstBar)->kol;
 
         while (Q != Nil) {
-            addressKol tempK = Q;
+            tempK = Q;
             Q = Q->next;
             free(tempK);
         }
 
-        addressBar tempB = FirstBar;
-        FirstBar = FirstBar->next;
+        tempB = *FirstBar;
+        *FirstBar = (*FirstBar)->next;
         free(tempB);
     }
+
+    *FirstBar = Nil;
 }
 
 
@@ -90,3 +96,28 @@ void TampilIsiFile(FILE *file){
 		printf("%s",buffer);
 		}	
 	}
+	
+
+void HapusFile(char *filename, addressBar *FirstBar){
+
+    FILE *file = BukaFile(filename);
+
+    if(file == NULL){
+        printf("File tidak ditemukan!\n");
+        return;
+    }
+
+	
+    if(*FirstBar != Nil){
+        freeAll(FirstBar);
+    }
+ 	fclose(file);
+ 	
+    if(remove(filename) == 0){
+        printf("File berhasil dihapus!\n");
+    }
+    else{
+        printf("File gagal dihapus!\n");
+    }
+    getch();
+}

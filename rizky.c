@@ -8,7 +8,7 @@ void printBar(addressBar FirstBar) {
         addressKol Q = temp->kol;
 		printf("  %-2d|",i);
         while (Q != Nil) {
-            printf("%c", Q->info);
+            printf("%d", Q->info);
             Q = Q->next;
         }
 

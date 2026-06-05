@@ -28,12 +28,14 @@ void SaveFile(char *filename,addressBar FirstBar){
     FILE *fp = fopen(filename,"w");
     addressKol Kol;
    while(FirstBar != Nil){
-   	Kol = FirstBar ->kol;
+   	Kol = FirstBar->kol;
    		while(Kol != Nil){
    			fprintf(fp,"%c",Kol->info);
    			Kol = Kol ->next;
 		   }
-		   fprintf(fp,"\n");
+		   if (FirstBar->next != Nil) {
+		   	fprintf(fp,"\n");
+		   }
 		   FirstBar = FirstBar->next;
    }
 
@@ -106,12 +108,9 @@ void HapusFile(char *filename, addressBar *FirstBar){
         printf("File tidak ditemukan!\n");
         return;
     }
-
-	
-    if(*FirstBar != Nil){
-        freeAll(FirstBar);
-    }
  	fclose(file);
+ 	
+ 	freeAll(FirstBar);
  	
     if(remove(filename) == 0){
         printf("File berhasil dihapus!\n");

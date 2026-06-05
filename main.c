@@ -8,14 +8,15 @@ int main() {
 	char filename[100];
 	FILE *file;
 			
-	addressBar FirstBar;
+	addressBar FirstBar = Nil;
 	addressBar CurrentBar = Nil;
-	addressClipboard Clipboard = Nil;
+	int key;
+		addressClipboard Clipboard = Nil;
 	addressClipboard DuplikatClipboard = Nil;
     addressKol Cursor = Nil;
  	int CursorX = 5;
 	int CursorY = 1;
-	int key;
+
 		
 	SelectPoint SelStart, SelEnd;
 		
@@ -25,7 +26,7 @@ int main() {
 	SelStart.kol = Nil;
 	SelEnd.kol = Nil;
 	
-	 int Selecting = 0;
+	int Selecting = 0;	
     while(1){	
 
         system("cls");
@@ -56,7 +57,7 @@ int main() {
 			
 		    int key;
 			char filename[100];
-		    printf(" TEXT EDITOR COBA COBA \n");
+		    printf(" TEXT EDITOR\n");
 		
 		    while (1) { 
 		        key = getch();
@@ -70,7 +71,9 @@ int main() {
 		
 		
 		        if (key == 27) {
-//		            freeAll(FirstBar);
+		            freeAll(&FirstBar);
+		            CurrentBar = Nil; 
+    				Cursor = Nil;
 		            printf("\n\n\n================ Memory dibebaskan ======================\n\n\n");
 		            break;
 		        }
@@ -148,19 +151,21 @@ int main() {
 			file = BukaFile(filename);
 			
 			if(file != Nil){
+        		freeAll(&FirstBar); 				// kosongkan memori lama jika ada sebelum buka yang baru
 				printf("File Berhasil Dibuka\n");
 				printf(" isi file:\n");
 				OpenFileToLinkedList(file,&FirstBar,&CurrentBar,&Cursor,&CursorX,&CursorY);
+				fclose(file);
 				Cursor = Nil;
 				CursorX = 5;
 				CursorY = 1;
 				CurrentBar = FirstBar;
 				system("cls");
-				printf(" TEXT EDITOR COBA COBA \n");
+				printf(" TEXT EDITOR\n");
 				printBar(FirstBar);
 				setCursor(CursorX, CursorY);
-			}
-		    while (1) {
+				
+				while (1) {
 		        key = getch();
 				if(key == 19){
 					printf("\nMasukan nama file:");
@@ -172,6 +177,9 @@ int main() {
 		
 		
 		        if (key == 27) {
+		        	freeAll(&FirstBar);
+		        	CurrentBar = Nil; 
+    				Cursor = Nil;
 		            printf("\n\n\n================ Memory dibebaskan ======================\n\n\n");
 		            break;
 		        }
@@ -270,7 +278,7 @@ int main() {
 					
 				    system("cls");
 				
-				    printf(" TEXT EDITOR COBA COBA \n");
+				    printf(" TEXT EDITOR\n");
 					
 				    printBar(FirstBar);
 				
@@ -283,7 +291,11 @@ int main() {
 			
 				else 
 				 	InsertKarakter(key, &FirstBar, &CurrentBar, &Cursor, &CursorX, CursorY);
-			}	
+			} 
+		    
+			}	 else {
+				getch();
+			}
 		}
 		
 		else if(menu == 3){

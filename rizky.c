@@ -11,12 +11,6 @@ void printBar(addressBar FirstBar) {
             printf("%c", Q->info);
             Q = Q->next;
         }
-
-//        printf("   | longBar = %d", FirstBar->longBar);
-		
-		if(temp->tail != Nil) {
-        printf("   | Tail = %c   |   Panjang : %d", temp->tail->info,temp->longBar); //ki urang nitip ini dulu lagi nyari bug dimananya
-        }
         
         printf("\n");
         
@@ -27,11 +21,24 @@ void printBar(addressBar FirstBar) {
 
 void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY, SelectPoint SelStart, SelectPoint SelEnd, int *Selecting) {
 		if (*Selecting == 1) {
-			addressKol temp;
+			backspaceSelecting(CurrentBar, Cursor, CursorX, SelStart, SelEnd);
+			*Selecting = 0;
+		} else {
+			backspaceNormal(CurrentBar, Cursor, CursorX, CursorY);
+		}
+	
+	system("cls");
+	printf(" TEXT EDITOR\n");
+	printBar(FirstBar);
+	setCursor(*CursorX, *CursorY);
+}
+
+void backspaceSelecting(addressBar *CurrentBar, addressKol *Cursor, int *CursorX, SelectPoint SelStart, SelectPoint SelEnd) {
+	addressKol temp;
 			addressKol start = SelStart.kol;
 			addressKol end = SelEnd.kol;
 			addressKol stop = end->next;
-			if (start->prev == Nil && end->next == Nil) { // jika select huruf dari awal sampai akhir
+	if (start->prev == Nil && end->next == Nil) { // jika select huruf dari awal sampai akhir
 				while (start != stop) {
 					temp = start;
 					start = start->next;
@@ -88,9 +95,10 @@ void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, 
 					*CursorX = PCX(*CursorX, -1 * jumlahNodeDihapus);
 				}
 			}
-			*Selecting = 0;
-		} else {
-			if(*Cursor == Nil && (*CurrentBar)->prev == Nil) { // jika cursor saat ini nil, tidak memiliki baris sebelumnya, baris saat ini tidak memiliki node kol
+}
+
+void backspaceNormal(addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY) {
+	if(*Cursor == Nil && (*CurrentBar)->prev == Nil) { // jika cursor saat ini nil, tidak memiliki baris sebelumnya, baris saat ini tidak memiliki node kol
 				// tidak akan melakukan apa apa
 			} else if (*Cursor == Nil && (*CurrentBar)->prev != Nil && (*CurrentBar)->kol != Nil) { // cek apakah kursor saat ini tidak menunjuk ke node manapun (artinya cursor berada di paling kiri baris) dan apakah baris saat ini memiliki baris sebelumnya dan apakah baris saat ini posisinya tidak kosong (yang artinya blok ini digunakan untuk meng-handle backspace di baris yang memiliki prev dan cursor berada di paling kiri dan baris saat ini memiliki node kol (terdapat huruf di baris saat ini)
 				addressBar tempBar = *CurrentBar; // isi tempBar dengan pointer ke baris saat ini (akan digunakan untuk free)
@@ -152,13 +160,8 @@ void backspace(addressBar FirstBar, addressBar *CurrentBar, addressKol *Cursor, 
 				*CurrentBar = (*CurrentBar)->prev; // ubah pointer currentbar menjadi menunjuk ke node sebelumnya
 				free(tempBar); // membebaskan node baris yang tadi (currentbar)
 			}
-	}
-	
-	system("cls");
-	printf(" TEXT EDITOR COBA COBA \n");
-	printBar(FirstBar);
-	setCursor(*CursorX, *CursorY);
 }
+
 
 void CekClipboard(addressClipboard *CopyClipboard) {
 	if (*CopyClipboard != Nil) {

@@ -130,7 +130,7 @@ void GerakKursor(int key, addressBar *CurrentBar, addressKol *Cursor, int *Curso
     }
 
     system("cls");
-    printf(" TEXT EDITOR COBA COBA \n");
+    printf(" TEXT EDITOR\n");
     printBar(FirstBar);
     setCursor(*CursorX, *CursorY);
 }
@@ -220,7 +220,7 @@ void BarisBaru(addressBar *CurrentBar, addressBar *FirstBar, addressKol *Cursor,
 	
     system("cls");
 
-    printf(" TEXT EDITOR COBA COBA \n");
+    printf(" TEXT EDITOR\n");
 
     printBar(*FirstBar);
 
@@ -309,7 +309,7 @@ void InsertKarakter(char key, addressBar *FirstBar, addressBar *CurrentBar, addr
 	
 	    system("cls");
 	
-	    printf(" TEXT EDITOR COBA COBA \n");
+	    printf(" TEXT EDITOR\n");
 	
 	    printBar(*FirstBar);
 	
@@ -473,7 +473,7 @@ void PasteClipboard(addressBar FirstBar,addressBar *CurrentBar,addressKol *Curso
     
     system("cls");
 
-    printf(" TEXT EDITOR COBA COBA \n");
+    printf(" TEXT EDITOR \n");
 
     printBar(FirstBar);
 

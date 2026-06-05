@@ -11,4 +11,8 @@ void CekClipboard  (addressClipboard *CopyClipboard);
 addressClipboard CopyToClipboard(addressKol SelStart, addressKol SelEnd);
 
 void Copy(addressClipboard *Hasil, addressKol tempStart, addressKol tempEnd);
+
+void backspaceSelecting(addressBar *CurrentBar, addressKol *Cursor, int *CursorX, SelectPoint SelStart, SelectPoint SelEnd);
+
+void backspaceNormal(addressBar *CurrentBar, addressKol *Cursor, int *CursorX, int *CursorY);
 #endif
